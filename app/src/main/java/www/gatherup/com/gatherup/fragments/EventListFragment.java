@@ -94,7 +94,7 @@ public class EventListFragment extends Fragment {
         final ListView eventListView = (ListView)view.findViewById(R.id.eventlist_fragment_listview);
         // TODO This is using GlobalAppState
 
-        mDetailedEventArrayList = ((GlobalAppState)getContext().getApplicationContext()).getDetailedEventList();
+        mDetailedEventArrayList = ((GlobalAppState)getContext().getApplicationContext()).getFilteredDetailedEvents();
         EventListViewAdapter adapter = new EventListViewAdapter(this.getContext(), mDetailedEventArrayList);
 
 

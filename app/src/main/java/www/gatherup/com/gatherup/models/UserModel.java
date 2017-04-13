@@ -13,9 +13,9 @@ import www.gatherup.com.gatherup.data.User;
 
 public class UserModel {
 
-    private List<Event> mRegisteredEvents = new ArrayList<>();
-    private List<Event> mEvents = new ArrayList<>();
-    private List<User> mFriends = new ArrayList<>();
+    private ArrayList<Event> mRegisteredEvents = new ArrayList<>();
+    private ArrayList<Event> mEvents = new ArrayList<>();
+    private ArrayList<User> mFriends = new ArrayList<>();
     private String mAccountName;
     //private String mAlias;
     private String mEmail;
@@ -30,7 +30,7 @@ public class UserModel {
         return sUserModel;
     }
 
-    public List<Event> getRegisteredDetailedEvents() {
+    public ArrayList<Event> getRegisteredDetailedEvents() {
         return mRegisteredEvents;
     }
 
@@ -38,7 +38,7 @@ public class UserModel {
         mRegisteredEvents.add(registeredDetailedEvent);
     }
 
-    public List<Event> getEvents() {
+    public ArrayList<Event> getEvents() {
         return mEvents;
     }
 
@@ -46,7 +46,7 @@ public class UserModel {
         mEvents.add(aEvent);
     }
 
-    public List<User> getFriends() {
+    public ArrayList<User> getFriends() {
         return mFriends;
     }
 
