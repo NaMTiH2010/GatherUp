@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -21,6 +23,7 @@ import java.util.Iterator;
 import www.gatherup.com.gatherup.GlobalAppState;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.Event;
 
 public class SearchEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -108,42 +111,49 @@ public class SearchEventActivity extends AppCompatActivity implements DatePicker
 
     private void filter(){
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
-        ArrayList<DetailedEvent> detailedEvents;
+        ArrayList<Event> aEvents;
         if (radiusFilter > 0 ){
-            detailedEvents = (ArrayList<DetailedEvent>) appState.getNearByEvents(40.7525, -73.4287, radiusFilter).clone();
+            aEvents = (ArrayList<Event>) appState.getNearByEvents(40.7525, -73.4287, radiusFilter).clone();
         }
         else {
-            detailedEvents = (ArrayList<DetailedEvent>) appState.getDetailedEventList().clone();
+            aEvents = (ArrayList<Event>) appState.getEventList().clone();
         }
 
         int dateTvLength = dateTv.getText().length();
 
-        for (Iterator<DetailedEvent> it = detailedEvents.iterator(); it.hasNext();){
-            DetailedEvent detailedEvent = it.next();
+        for (Iterator<Event> it = aEvents.iterator(); it.hasNext();){
+            Event anEvent = it.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            Calendar cal = Calendar.getInstance();
+            try {
+                cal.setTime(sdf.parse(anEvent.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if (dateTvLength != 0){
-                if (detailedEvent.getStartDate().get(Calendar.YEAR )!= dateFilter.get(Calendar.YEAR) ||
-                        detailedEvent.getStartDate().get(Calendar.MONTH )!= dateFilter.get(Calendar.MONTH) ||
-                        detailedEvent.getStartDate().get(Calendar.DAY_OF_MONTH )!= dateFilter.get(Calendar.DAY_OF_MONTH)){
+                if (cal.get(Calendar.YEAR )!= dateFilter.get(Calendar.YEAR) ||
+                        cal.get(Calendar.MONTH )!= dateFilter.get(Calendar.MONTH) ||
+                        cal.get(Calendar.DAY_OF_MONTH )!= dateFilter.get(Calendar.DAY_OF_MONTH)){
                     it.remove();
                     continue;
                 }
             }
             if (keywordFilter.length() != 0){
-                if (!detailedEvent.getTitle().contains(keywordFilter)){
+                if (!anEvent.getTitle().contains(keywordFilter)){
                     it.remove();
                     continue;
                 }
             }
 
             if (categoryFilter != "Any"){
-                if (!detailedEvent.getCategory().equals(categoryFilter)){
+                if (!anEvent.getCategory().equals(categoryFilter)){
                     it.remove();
                     continue;
                 }
             }
         }
 
-        appState.setFilteredDetailedEvents(detailedEvents);
+        appState.setFilteredEvents(aEvents);
     }
 
     @Override

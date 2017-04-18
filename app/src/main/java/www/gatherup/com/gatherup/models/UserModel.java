@@ -34,8 +34,8 @@ public class UserModel {
         return mRegisteredEvents;
     }
 
-    public void addRegisteredEvents(Event registeredDetailedEvent) {
-        mRegisteredEvents.add(registeredDetailedEvent);
+    public void addRegisteredEvent(Event aEvent) {
+        mRegisteredEvents.add(aEvent);
     }
 
     public ArrayList<Event> getEvents() {

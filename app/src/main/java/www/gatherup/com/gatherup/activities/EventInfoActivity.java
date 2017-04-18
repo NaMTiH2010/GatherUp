@@ -27,7 +27,7 @@ public class EventInfoActivity extends AppCompatActivity {
         //mDetailedEvent = (DetailedEvent)getIntent().getExtras().get("mDetailedEvent");
 
         //TODO this is using GlobalAppState
-        mDetailedEvent = ((GlobalAppState)getApplicationContext()).getCurrentDetailedEvent();
+        mDetailedEvent = new DetailedEvent(((GlobalAppState)getApplicationContext()).getCurrentEvent());
 
         TextView titleTv = (TextView)findViewById(R.id.event_info_title_tv);
         TextView dayTv = (TextView)findViewById(R.id.event_info_day);

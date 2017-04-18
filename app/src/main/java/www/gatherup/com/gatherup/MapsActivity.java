@@ -49,8 +49,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
 
-        latitude = appState.getCurrentDetailedEvent().getLatitude();
-        longitude = appState.getCurrentDetailedEvent().getLongitude();
+        latitude = appState.getCurrentEvent().getLatitude();
+        longitude = appState.getCurrentEvent().getLongitude();
 
         //Bundle bundle = getIntent().getExtras();
         //DetailedEvent event = (DetailedEvent)bundle.get("event");

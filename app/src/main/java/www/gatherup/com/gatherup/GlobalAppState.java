@@ -5,6 +5,7 @@ import android.app.Application;
 import java.util.ArrayList;
 
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.User;
 
 /**
@@ -16,22 +17,22 @@ public class GlobalAppState extends Application {
     private User loggedInUser = new User();
     private User otherUser = new User();
     private ArrayList<User> userList = new ArrayList<>();
-    private ArrayList<DetailedEvent> mDetailedEventList = new ArrayList<>();
-    private DetailedEvent mCurrentDetailedEvent = new DetailedEvent();
+    private ArrayList<Event> mEventList = new ArrayList<>();
+    private Event mCurrentEvent = new Event();
     private ArrayList<String> categories = new ArrayList<String>();
-    private ArrayList<DetailedEvent> mFilteredDetailedEvents = new ArrayList<>();
+    private ArrayList<Event> mFilteredEvents = new ArrayList<>();
 
 
-    public ArrayList<DetailedEvent> getNearByEvents(double latitude, double longitude, double mileRadius){
-        ArrayList<DetailedEvent> nearbyDetailedEvents = new ArrayList<>();
+    public ArrayList<Event> getNearByEvents(double latitude, double longitude, double mileRadius){
+        ArrayList<Event> nearbyEvents = new ArrayList<>();
 
-        for(DetailedEvent detailedEvent : mDetailedEventList){
-            if (distFrom(latitude, longitude, detailedEvent.getLatitude(), detailedEvent.getLongitude()) < mileRadius){
-                nearbyDetailedEvents.add(detailedEvent);
+        for(Event aEvent : mEventList){
+            if (distFrom(latitude, longitude, aEvent.getLatitude(), aEvent.getLongitude()) < mileRadius){
+                nearbyEvents.add(aEvent);
             }
         }
 
-        return nearbyDetailedEvents;
+        return nearbyEvents;
     }
 
     public double distFrom(double lat1, double lng1, double lat2, double lng2) {
@@ -76,24 +77,24 @@ public class GlobalAppState extends Application {
         this.userList = userList;
     }
 
-    public DetailedEvent getCurrentDetailedEvent() {
-        return mCurrentDetailedEvent;
+    public Event getCurrentEvent() {
+        return mCurrentEvent;
     }
-    public void setCurrentDetailedEvent(DetailedEvent currentDetailedEvent) {
-        this.mCurrentDetailedEvent = currentDetailedEvent;
-    }
-
-    public ArrayList<DetailedEvent> getDetailedEventList() {
-        return mDetailedEventList;
-    }
-    public void setDetailedEventList(ArrayList<DetailedEvent> detailedEventList) {
-        this.mDetailedEventList = detailedEventList;
+    public void setCurrentEvent(Event currentEvent) {
+        this.mCurrentEvent = currentEvent;
     }
 
-    public ArrayList<DetailedEvent> getFilteredDetailedEvents() {
-        return mFilteredDetailedEvents;
+    public ArrayList<Event> getEventList() {
+        return mEventList;
     }
-    public void setFilteredDetailedEvents(ArrayList<DetailedEvent> filteredDetailedEvents) {
-        this.mFilteredDetailedEvents = filteredDetailedEvents;
+    public void setEventList(ArrayList<Event> aEventList) {
+        this.mEventList = aEventList;
+    }
+
+    public ArrayList<Event> getFilteredEvents() {
+        return mFilteredEvents;
+    }
+    public void setFilteredEvents(ArrayList<Event> filteredEvents) {
+        this.mFilteredEvents = filteredEvents;
     }
 }// End Class

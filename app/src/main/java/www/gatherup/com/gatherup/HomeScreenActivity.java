@@ -34,7 +34,7 @@ public class HomeScreenActivity extends AppCompatActivity
     private static final String TAG = "NewPostActivity";
 
 
-    ArrayList<DetailedEvent> mDetailedEventList;
+    ArrayList<Event> mEventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +63,12 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
         // Create mock eventlist
-        mDetailedEventList = new ArrayList<>();
+        mEventList = UserModel.get().getEvents(); /*new ArrayList<>();
         if(UserModel.get().getEvents().size()>0){
             for(Event e : UserModel.get().getEvents()){
-                mDetailedEventList.add(new DetailedEvent(e));
+                mEventList.add(new DetailedEvent(e));
             }
-        }
+        }*/
 
         //mDetailedEventList.add(new DetailedEvent(UserModel.get().getEvents().get(0)));
                 //
@@ -97,15 +97,15 @@ public class HomeScreenActivity extends AppCompatActivity
         // TODO this is for trying out GlobalAppState
 
         //appState.setDetailedEventList((ArrayList<DetailedEvent>) mDetailedEventList.clone());
-        appState.setDetailedEventList((ArrayList<DetailedEvent>) mDetailedEventList.clone());
-        appState.setFilteredDetailedEvents(appState.getDetailedEventList());
+        appState.setEventList((ArrayList<Event>) mEventList.clone());
+        appState.setFilteredEvents(appState.getEventList());
 
 
 
 
-        EventListFragment allEventsListFragment = EventListFragment.newInstance(mDetailedEventList);
+        /*EventListFragment allEventsListFragment = EventListFragment.newInstance(mEventList);
         FragmentManager manager= getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
+        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();*/
     }
 
     @Override
@@ -175,6 +175,11 @@ public class HomeScreenActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        mEventList = UserModel.get().getEvents();
     }
 
 }

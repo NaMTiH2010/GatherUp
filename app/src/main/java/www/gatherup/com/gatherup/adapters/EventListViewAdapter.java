@@ -12,26 +12,29 @@ import android.widget.TextView;
 import www.gatherup.com.gatherup.R;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.Event;
 
 /**
  * Created by edwinsventura on 3/25/17.
  */
 
-public class EventListViewAdapter extends ArrayAdapter<DetailedEvent> {
+public class EventListViewAdapter extends ArrayAdapter<Event> {
 
-    public EventListViewAdapter(Context context, ArrayList<DetailedEvent> detailedEvents){
-        super(context, 0, detailedEvents);
+    public EventListViewAdapter(Context context, ArrayList<Event> someEvents){
+        super(context, 0, someEvents);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DetailedEvent detailedEvent = getItem(position);
+        Event someEvent = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -46,14 +49,22 @@ public class EventListViewAdapter extends ArrayAdapter<DetailedEvent> {
         TextView category = (TextView)convertView.findViewById(R.id.item_event_category);
         TextView numberOfPeople = (TextView)convertView.findViewById(R.id.item_event_people);
 
-        shortDay.setText(detailedEvent.getStartDate().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()) );
-        dayNumber.setText(String.valueOf(detailedEvent.getEndDate().get(Calendar.DAY_OF_MONTH)) );
-        title.setText(detailedEvent.getTitle());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(sdf.parse(someEvent.getDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        shortDay.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()) );
+        dayNumber.setText(String.valueOf(someEvent.getDate().substring(someEvent.getDate().indexOf("/")+1,someEvent.getDate().lastIndexOf("/"))) );
+        title.setText(someEvent.getTitle());
         //location.setText(AddressGenerator.getAddressLine(getContext(), detailedEvent.getLatitude(), detailedEvent.getLongitude()));
-        location.setText(detailedEvent.getAddress());
-        dayAndTime.setText(detailedEvent.getStartDate().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + detailedEvent.getStartDate().get(Calendar.HOUR) + ":" + detailedEvent.getStartDate().get(Calendar.MINUTE) + " " + detailedEvent.getStartDate().getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault()));
-        category.setText(detailedEvent.getCategory());
-        numberOfPeople.setText("RSVP: " + String.valueOf( detailedEvent.getAtendeesList().size()));
+        location.setText(someEvent.getAddress()+ " "+ someEvent.getCity() + " "+ someEvent.getState()+ " "+ someEvent.getZipcode());
+        dayAndTime.setText(someEvent.getDate()+ " "+ someEvent.getStartTime());
+        category.setText(someEvent.getCategory());
+        numberOfPeople.setText("RSVP: " + String.valueOf(0));
 
 
         return convertView;

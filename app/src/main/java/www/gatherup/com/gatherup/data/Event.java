@@ -166,4 +166,6 @@ public class Event {
     public void setRegisteredUsers(HashMap<String, Boolean> registeredUsers) {
         mRegisteredUsers = registeredUsers;
     }*/
+
+
 }

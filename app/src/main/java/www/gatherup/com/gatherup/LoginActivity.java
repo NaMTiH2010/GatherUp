@@ -171,8 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             System.out.println("Nothing Done");
                             Firebase_Model.get().setMainUser();
-
-                            //Firebase_Model.get().setRegisteredEventListener();
+                            Firebase_Model.get().setRegisteredEventListener();
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();
