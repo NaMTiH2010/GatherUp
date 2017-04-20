@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         status_TV = (TextView)findViewById(R.id.tvSignInStatus);
 
         // Set up click handlers and view item references
@@ -171,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             System.out.println("Nothing Done");
                             Firebase_Model.get().setMainUser();
+                            Firebase_Model.get().getRegFake();
                             Firebase_Model.get().setRegisteredEventListener();
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);

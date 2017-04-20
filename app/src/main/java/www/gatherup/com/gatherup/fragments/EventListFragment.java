@@ -20,24 +20,25 @@ import java.util.ArrayList;
 
 import www.gatherup.com.gatherup.activities.EventInfoActivity;
 import www.gatherup.com.gatherup.adapters.EventListViewAdapter;
-import www.gatherup.com.gatherup.data.DetailedEvent;
+//import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.Event;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link EventListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EventListFragment#newInstance} factory method to
+ * Use the {@link EventListFragment} factory method to
  * create an instance of this fragment.
  */
 public class EventListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM_EVENTLIST = "mDetailedEventArrayList";
+    private static final String ARG_PARAM_EVENTLIST = "mEventArrayList";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private ArrayList<DetailedEvent> mDetailedEventArrayList;
+    private ArrayList<Event> mEventArrayList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,21 +53,21 @@ public class EventListFragment extends Fragment {
      * @return A new instance of fragment EventListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventListFragment newInstance(ArrayList<DetailedEvent> detailedEventArrayList) {
+    public static EventListFragment newInstance() {
         EventListFragment fragment = new EventListFragment();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_PARAM_EVENTLIST, detailedEventArrayList);
-        fragment.setArguments(args);
+        /*Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_PARAM_EVENTLIST, aEventArrayList);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mDetailedEventArrayList = getArguments().getParcelableArrayList(ARG_PARAM_EVENTLIST);
+        /*if (getArguments() != null) {
+            mEventArrayList = getArguments().getParcelableArrayList(ARG_PARAM_EVENTLIST);*/
 
-        }
+        //}
 
 
     }
@@ -94,8 +95,13 @@ public class EventListFragment extends Fragment {
         final ListView eventListView = (ListView)view.findViewById(R.id.eventlist_fragment_listview);
         // TODO This is using GlobalAppState
 
-        mDetailedEventArrayList = ((GlobalAppState)getContext().getApplicationContext()).getFilteredDetailedEvents();
-        EventListViewAdapter adapter = new EventListViewAdapter(this.getContext(), mDetailedEventArrayList);
+
+        mEventArrayList = ((GlobalAppState)getContext().getApplicationContext()).getFilteredEvents();
+        EventListViewAdapter adapter = new EventListViewAdapter(this.getContext(), mEventArrayList);
+
+       // mEventArrayList = ((GlobalAppState)getContext().getApplicationContext()).getEventList();
+       // EventListViewAdapter adapter = new EventListViewAdapter(this.getContext(), mEventArrayList);
+
 
 
         eventListView.setAdapter(adapter);
@@ -115,11 +121,11 @@ public class EventListFragment extends Fragment {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                DetailedEvent detailedEvent = (DetailedEvent)eventListView.getItemAtPosition(position);
+                Event aEvent = (Event)eventListView.getItemAtPosition(position);
                 Intent intent = new Intent(getActivity(), EventInfoActivity.class);
-               // intent.putExtra("detailedEvent", detailedEvent);
+               // intent.putExtra("Event", Event);
                 //TODO this is using GLobalAppState
-                ((GlobalAppState)getContext().getApplicationContext()).setCurrentDetailedEvent(detailedEvent);
+                ((GlobalAppState)getContext().getApplicationContext()).setCurrentEvent(aEvent);
                 startActivity(intent);
 
             }

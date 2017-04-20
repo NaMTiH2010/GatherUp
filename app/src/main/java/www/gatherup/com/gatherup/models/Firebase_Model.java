@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.User;
@@ -71,6 +73,13 @@ public class Firebase_Model {
 
 
         return mAuthUser != null;
+    }
+    public void getRegFake(){
+        for(Event e : UserModel.get().getEvents()){
+            if(e.getCreator() == getUserID()){
+                UserModel.get().addRegisteredEvent(e);
+            }
+        }
     }
 
     public String getEmail(){
@@ -134,6 +143,7 @@ public class Firebase_Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                UserModel.get().getEvents().clear();
                 for(DataSnapshot child : children){
                     Event e = child.getValue(Event.class);
                     UserModel.get().addEvent(e);

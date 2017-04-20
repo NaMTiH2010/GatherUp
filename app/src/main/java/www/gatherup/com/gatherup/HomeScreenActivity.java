@@ -51,6 +51,7 @@ public class HomeScreenActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        fab.setVisibility(View.INVISIBLE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -63,7 +64,10 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
         // Create mock eventlist
-        mEventList = UserModel.get().getEvents(); /*new ArrayList<>();
+        mEventList = UserModel.get().getEvents();
+        //mEventList = new ArrayList<>();
+        /*new ArrayList<>();
+
         if(UserModel.get().getEvents().size()>0){
             for(Event e : UserModel.get().getEvents()){
                 mEventList.add(new DetailedEvent(e));
@@ -84,6 +88,7 @@ public class HomeScreenActivity extends AppCompatActivity
 */
         // Create mock category list
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
+        appState.getCategories().clear();
         appState.getCategories().add("Any");
         appState.getCategories().add("Food");
         appState.getCategories().add("Sports");
@@ -103,9 +108,9 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
 
-        /*EventListFragment allEventsListFragment = EventListFragment.newInstance(mEventList);
+        EventListFragment allEventsListFragment = EventListFragment.newInstance();
         FragmentManager manager= getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();*/
+        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
     }
 
     @Override

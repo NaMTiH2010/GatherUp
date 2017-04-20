@@ -19,9 +19,9 @@ public class SearchListActivity extends AppCompatActivity implements EventListFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
 
-        /*EventListFragment allEventsListFragment = EventListFragment.newInstance(new ArrayList<Event>());
+        EventListFragment allEventsListFragment = EventListFragment.newInstance();
         FragmentManager manager= getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.search_event_list_content, allEventsListFragment).commit();*/
+        manager.beginTransaction().replace(R.id.search_event_list_content, allEventsListFragment).commit();
     }
 
     @Override
