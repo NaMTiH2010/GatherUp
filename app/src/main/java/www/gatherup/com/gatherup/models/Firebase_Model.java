@@ -74,13 +74,13 @@ public class Firebase_Model {
 
         return mAuthUser != null;
     }
-    public void getRegFake(){
+ /*   public void getRegFake(){
         for(Event e : UserModel.get().getEvents()){
             if(e.getCreator() == getUserID()){
                 UserModel.get().addRegisteredEvent(e);
             }
         }
-    }
+    }*/
 
     public String getEmail(){
         return mAuthUser.getEmail();
@@ -124,13 +124,30 @@ public class Firebase_Model {
     }
 
     public void setRegisteredEventListener() {
-        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    findEventByID(postSnapshot.getKey());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey();
+                if(!key.isEmpty()){
+                    findEventByID(key);
                 }
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -139,7 +156,7 @@ public class Firebase_Model {
     }
     public void setAllEventListener() {
 
-        mDatabase.child("events").addValueEventListener(new ValueEventListener() {
+       /* mDatabase.child("events").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -154,36 +171,58 @@ public class Firebase_Model {
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("Nothing Done");
             }
+        });*/
+
+        mDatabase.child("events").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                Event ev = dataSnapshot.getValue(Event.class);
+                UserModel.get().addEvent(ev);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 
     public void addEvent(Event e){
         // Get Unique Key For Event
-        //mAuthUser = mAuth.getCurrentUser();
         String key = mDatabase.child("events").push().getKey();
-        // Add Extra Attributes to Event
-        //e.addRegisteredUser(mAuthUser.getUid());
         e.setCreator(mAuthUser.getUid());
         // Send Event To Database
-        mDatabase.child("events").push().setValue(e);
+        mDatabase.child("events").child(key).setValue(e);
         // Add Event To User Who Built Event
         mDatabase.child("rsvp").child("event_users").child(key).child(mAuthUser.getUid()).setValue(true);
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).child(key).setValue(true);
 
-        //mDatabase.child('members')
-        // push event to database using that key
-        // add reference to that event key with user
-        //
-                    //.setValue(e);
     }
 
     public void findEventByID(String key){
-        mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("events").child(key);
-        mPostReference.addListenerForSingleValueEvent(new ValueEventListener() {
+       // mPostReference = FirebaseDatabase.getInstance().getReference()
+        ;
+        mDatabase.child("events").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserModel.get().addRegisteredEvent(dataSnapshot.getValue(Event.class));
+                Event ev = dataSnapshot.getValue(Event.class);
+                UserModel.get().addRegisteredEvent(ev);
             }
 
             @Override
@@ -194,12 +233,13 @@ public class Firebase_Model {
         //mPostReference.removeEventListener();
     }
     public void findUserByID(String key){
-        mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(key);
-        mPostReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        //mPostReference = FirebaseDatabase.getInstance().getReference()
+
+        mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserModel.get().addFriends(dataSnapshot.getValue(User.class));
+                User user = dataSnapshot.getValue(User.class);
+                UserModel.get().addFriends(user);
             }
 
             @Override

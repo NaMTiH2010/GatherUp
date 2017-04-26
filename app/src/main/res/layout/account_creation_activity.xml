@@ -6,15 +6,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/app_background">
+              android:background="@drawable/bg_abstract">
 
     <TextView
-        android:text="Username"
+        android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView9"
+        android:text="Username"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="30sp"
+        />
 
     <EditText
         android:layout_width="match_parent"
@@ -26,12 +27,12 @@
         android:layout_marginBottom="15dp" />
 
     <TextView
-        android:text="Display Name"
+        android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView8"
+        android:text="Display Name"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="30sp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView7"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="30sp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -65,7 +66,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
         android:textColor="#000000"
-        android:textSize="20sp"/>
+        android:textSize="30sp"/>
 
     <EditText
         android:id="@+id/create_acc_pass_edit"
@@ -81,7 +82,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView10"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="30sp" />
 
     <EditText
         android:id="@+id/create_acc_pass_confirm_edit"

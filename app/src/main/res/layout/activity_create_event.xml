@@ -5,37 +5,42 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:orientation="vertical"
-                                             tools:context="www.gatherup.com.gatherup.activities.CreateEventActivity">
+                                             tools:context="www.gatherup.com.gatherup.activities.CreateEventActivity"
+                                             android:background="@drawable/bg_abstract">
 
     <TextView
         android:id="@+id/maxCap_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Max Capacity:"
-        android:textSize="14sp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="18dp"
+        android:fontFamily="serif"
+        android:text="Max Capacity:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startTime_TV"/>
 
     <TextView
         android:id="@+id/description_TV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
+        android:fontFamily="serif"
         android:text="Description"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/zipcode_ET"/>
 
     <TextView
@@ -48,26 +53,30 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:background="@color/colorPrimary"
+        android:fontFamily="serif"
         android:text="Create Event"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/zipcode_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zip:"
-        android:textSize="14sp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/city_ET"
         android:layout_marginLeft="152dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        android:layout_marginTop="0dp"
+        android:fontFamily="serif"
+        android:text="Zip:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/city_ET"/>
 
     <TextView
         android:id="@+id/startTime_TV"
@@ -75,8 +84,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="27dp"
         android:layout_marginTop="21dp"
+        android:fontFamily="serif"
         android:text="Start Time:"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_TV"/>
 
@@ -84,12 +96,15 @@
         android:id="@+id/address_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address:"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@+id/location_TV"
         android:layout_marginLeft="41dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        android:layout_marginTop="4dp"
+        android:fontFamily="serif"
+        android:text="Address:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location_TV"/>
 
     <TextView
         android:id="@+id/city_TV"
@@ -97,8 +112,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="69dp"
         android:layout_marginTop="21dp"
+        android:fontFamily="serif"
         android:text="City:"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/address_TV"/>
 
@@ -108,9 +126,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="7dp"
+        android:fontFamily="serif"
         android:inputType="numberDecimal"
         android:text="12"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/maxCap_TV"
@@ -123,9 +143,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="serif"
         android:inputType="textPostalAddress"
         android:text="150 north country rd."
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/address_TV"
@@ -139,8 +161,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="2dp"
+        android:fontFamily="serif"
         android:inputType="text"
         android:text="port jefferson"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintLeft_toRightOf="@+id/city_TV"
         app:layout_constraintRight_toRightOf="parent"
@@ -153,8 +177,10 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="1dp"
+        android:fontFamily="serif"
         android:inputType="text"
         android:text="ny"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintLeft_toRightOf="@+id/state_TV"
         app:layout_constraintRight_toLeftOf="@+id/zipcode_TV"
@@ -167,8 +193,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="0dp"
+        android:fontFamily="serif"
         android:inputType="text"
         android:text="11777"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/zipcode_TV"
@@ -183,9 +211,11 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="serif"
         android:inputType="textShortMessage"
         android:text="some description"
         android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/createEvent_BTN"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -199,9 +229,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
+        android:fontFamily="serif"
         android:inputType="text"
         android:text="party"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/title_TV"
@@ -214,13 +246,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="serif"
+        android:inputType="date"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/date_TV"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="2dp"
-        app:layout_constraintTop_toBottomOf="@+id/title_ET"
-        android:inputType="date"/>
+        app:layout_constraintTop_toBottomOf="@+id/title_ET"/>
 
     <EditText
         android:id="@+id/startTime_ET"
@@ -228,23 +262,28 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="serif"
+        android:inputType="time"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/startTime_TV"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_ET"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:inputType="time"/>
+        app:layout_constraintTop_toBottomOf="@+id/date_ET"/>
 
     <TextView
         android:id="@+id/state_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="State:"
-        android:textSize="14sp"
         android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="0dp"
+        android:fontFamily="serif"
+        android:text="State:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/city_ET"/>
 
     <TextView
@@ -257,6 +296,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
+        android:fontFamily="serif"
         android:text="Location"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -274,8 +314,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="65dp"
         android:layout_marginTop="6dp"
+        android:fontFamily="serif"
         android:text="Title:"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createEvent_TV"/>
 
@@ -285,8 +328,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="63dp"
         android:layout_marginTop="23dp"
+        android:fontFamily="serif"
         android:text="Date:"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_TV"/>
 
@@ -308,10 +354,14 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category:"
         android:layout_marginLeft="36dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="21dp"
+        android:fontFamily="serif"
+        android:text="Category:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/maxCap_TV"/>
 
     <Button
@@ -321,12 +371,18 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:fontFamily="serif"
         android:text="Create Event"
-        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/rounded_btn"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

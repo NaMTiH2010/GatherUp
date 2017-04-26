@@ -22,12 +22,13 @@ public class MyEventsActivity extends AppCompatActivity implements EventListFrag
         setContentView(R.layout.activity_my_events);
 
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
-
-        appState.setFilteredEvents(UserModel.get().getRegisteredDetailedEvents());
-
-       /* EventListFragment allEventsListFragment = EventListFragment.newInstance();
-        FragmentManager manager= getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.my_events_content, allEventsListFragment).commit();*/
+        if(!UserModel.get().getRegisteredDetailedEvents().isEmpty()) {
+            appState.setFilteredEvents(UserModel.get().getRegisteredDetailedEvents());
+            //
+            EventListFragment allEventsListFragment = EventListFragment.newInstance();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.my_events_content, allEventsListFragment).commit();
+        }
     }
 
     @Override

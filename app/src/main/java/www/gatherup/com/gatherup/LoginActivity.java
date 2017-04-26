@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             System.out.println("Nothing Done");
                             Firebase_Model.get().setMainUser();
-                            Firebase_Model.get().getRegFake();
+                            //Firebase_Model.get().getRegFake();
                             Firebase_Model.get().setRegisteredEventListener();
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);

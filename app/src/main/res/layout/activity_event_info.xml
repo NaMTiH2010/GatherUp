@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="10dp"
-    tools:context="www.gatherup.com.gatherup.activities.EventInfoActivity">
+    tools:context="www.gatherup.com.gatherup.activities.EventInfoActivity"
+    android:background="@drawable/bg_abstract">
 
     <TextView
         android:id="@+id/event_info_title_tv"
