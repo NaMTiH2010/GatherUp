@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:tools="http://schemas.android.com/tools"
@@ -13,14 +19,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="18dp"
         android:fontFamily="serif"
         android:text="Max Capacity:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startTime_TV"/>
+        android:layout_marginTop="17dp"
+        app:layout_constraintTop_toBottomOf="@+id/startTime_ET"/>
 
     <TextView
         android:id="@+id/description_TV"
@@ -69,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="152dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="19dp"
         android:fontFamily="serif"
         android:text="Zip:"
         android:textColor="@android:color/black"
@@ -82,22 +88,22 @@
         android:id="@+id/startTime_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginLeft="30dp"
         android:fontFamily="serif"
         android:text="Start Time:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_TV"/>
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/date_ET"/>
 
     <TextView
         android:id="@+id/address_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="41dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="serif"
         android:text="Address:"
         android:textColor="@android:color/black"
@@ -110,15 +116,15 @@
         android:id="@+id/city_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="69dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginLeft="78dp"
         android:fontFamily="serif"
         android:text="City:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_TV"/>
+        android:layout_marginTop="17dp"
+        app:layout_constraintTop_toBottomOf="@+id/address_ET"/>
 
     <EditText
         android:id="@+id/maxCap_ET"
@@ -131,7 +137,7 @@
         android:inputType="numberDecimal"
         android:text="12"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/maxCap_TV"
         app:layout_constraintRight_toRightOf="parent"
@@ -143,13 +149,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="11dp"
         android:fontFamily="serif"
         android:inputType="textPostalAddress"
         android:text="150 north country rd."
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/address_TV"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_TV"/>
@@ -160,12 +166,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="serif"
         android:inputType="text"
         android:text="port jefferson"
         android:textColor="@android:color/black"
         android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/city_TV"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/address_ET"/>
@@ -176,7 +183,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="serif"
         android:inputType="text"
         android:text="ny"
@@ -184,7 +191,8 @@
         android:textSize="14sp"
         app:layout_constraintLeft_toRightOf="@+id/state_TV"
         app:layout_constraintRight_toLeftOf="@+id/zipcode_TV"
-        app:layout_constraintTop_toBottomOf="@+id/city_ET"/>
+        app:layout_constraintTop_toBottomOf="@+id/city_ET"
+        app:layout_constraintHorizontal_bias="0.0"/>
 
     <EditText
         android:id="@+id/zipcode_ET"
@@ -192,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="serif"
         android:inputType="text"
         android:text="11777"
@@ -206,7 +214,7 @@
     <EditText
         android:id="@+id/description_ET"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -216,6 +224,8 @@
         android:text="some description"
         android:textAlignment="viewStart"
         android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:minHeight="200dp"
         app:layout_constraintBottom_toTopOf="@+id/createEvent_BTN"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -229,13 +239,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="serif"
         android:inputType="text"
         android:text="party"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/title_TV"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createEvent_TV"/>
@@ -246,12 +256,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="serif"
         android:inputType="date"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/date_TV"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_ET"/>
@@ -262,11 +272,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="serif"
         android:inputType="time"
         android:textColor="@android:color/black"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/startTime_TV"
         app:layout_constraintRight_toRightOf="parent"
@@ -277,7 +287,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="19dp"
         android:fontFamily="serif"
         android:text="State:"
         android:textColor="@android:color/black"
@@ -312,8 +322,8 @@
         android:id="@+id/title_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="65dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="69dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="serif"
         android:text="Title:"
         android:textColor="@android:color/black"
@@ -326,15 +336,15 @@
         android:id="@+id/date_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="63dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginLeft="71dp"
         android:fontFamily="serif"
         android:text="Date:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_TV"/>
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_ET"/>
 
     <Spinner
         android:id="@+id/category_Spin"
@@ -344,8 +354,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/textView14"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/maxCap_ET"/>
@@ -354,15 +364,15 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginLeft="42dp"
         android:fontFamily="serif"
         android:text="Category:"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxCap_TV"/>
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/maxCap_ET"/>
 
     <Button
         android:id="@+id/createEvent_BTN"
@@ -386,3 +396,4 @@
 
 
 </android.support.constraint.ConstraintLayout>
+</ScrollView>

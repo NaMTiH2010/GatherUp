@@ -15,18 +15,27 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/my_events_attenting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="I am Attending" />
+            android:text="I am Attending"
+            android:background="@drawable/rounded_btn"/>
 
         <Button
+
             android:id="@+id/my_events_created"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="I created" />
+            android:text="I created"
+            android:background="@drawable/rounded_btn"/>
 
     </LinearLayout>
 

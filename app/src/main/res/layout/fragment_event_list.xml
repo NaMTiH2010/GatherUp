@@ -19,6 +19,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/eventlist_fragment_listview" />
+        android:id="@+id/eventlist_fragment_listview"/>
 
 </LinearLayout>

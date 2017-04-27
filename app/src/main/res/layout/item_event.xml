@@ -36,12 +36,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:text="Title of the detailedEvent"
+            android:id="@+id/item_event_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:text="Title of the detailedEvent"
+            android:textAlignment="center"
             android:textColor="@color/colorBlack"
-            android:id="@+id/item_event_title" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:text="Location of the detailedEvent"

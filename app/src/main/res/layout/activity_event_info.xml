@@ -59,22 +59,30 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/event_info_rsvp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="I am going"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:background="@drawable/rounded_btn"/>
 
         <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/event_info_open_map_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="View Map"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:background="@drawable/rounded_btn"/>
 
         <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/event_info_report"
             android:layout_width="73dp"
             android:layout_height="wrap_content"

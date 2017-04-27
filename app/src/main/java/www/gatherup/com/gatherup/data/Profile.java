@@ -23,4 +23,60 @@ public class Profile {
         this.mAboutMe = aboutMe;
         this.mRating = rating;
     }
+
+    public int getAge() {
+        return mAge;
+    }
+
+    public void setAge(int age) {
+        mAge = age;
+    }
+
+    public String getGender() {
+        return mGender;
+    }
+
+    public void setGender(String gender) {
+        mGender = gender;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
+
+    public String getJob() {
+        return mJob;
+    }
+
+    public void setJob(String job) {
+        mJob = job;
+    }
+
+    public String getBirthday() {
+        return mBirthday;
+    }
+
+    public void setBirthday(String birthday) {
+        mBirthday = birthday;
+    }
+
+    public String getAboutMe() {
+        return mAboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        mAboutMe = aboutMe;
+    }
+
+    public int getRating() {
+        return mRating;
+    }
+
+    public void setRating(int rating) {
+        mRating = rating;
+    }
 }

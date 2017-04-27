@@ -95,17 +95,23 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/search_event_map_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Show on Map" />
+            android:layout_weight="0.94"
+            android:text="Show on Map"
+            android:background="@drawable/rounded_btn"/>
 
         <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/search_event_list_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Show on List" />
+            android:text="Show on List"
+            android:background="@drawable/rounded_btn"/>
     </LinearLayout>
 </LinearLayout>

@@ -27,7 +27,7 @@ public class DetailedEvent implements Parcelable {
     private String Description;
     private String category;
     private double rating;
-
+    private String mStartTime;
     public DetailedEvent(){
         this(null, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
     }
@@ -61,6 +61,7 @@ public class DetailedEvent implements Parcelable {
             this.startDate = Calendar.getInstance();
             this.endDate = Calendar.getInstance();
         }
+        this.mStartTime = e.getStartTime();
         this.title = e.getTitle();
         this.latitude = e.getLatitude();
         this.longitude = e.getLongitude();
@@ -72,6 +73,16 @@ public class DetailedEvent implements Parcelable {
         this.atendeesList = new ArrayList<>();
         this.rating = 0;
 
+    }
+
+    public String getStartTime() {
+        if(mStartTime.length()>1){return mStartTime;}
+        else{return "12:00PM";}
+
+    }
+
+    public void setStartTime(String startTime) {
+        mStartTime = startTime;
     }
 
     public int getEventID() {
@@ -166,6 +177,7 @@ public class DetailedEvent implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(eventID);
         dest.writeString(title);
+        dest.writeString(mStartTime);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
 //        dest.writeValue(owner);
@@ -188,6 +200,7 @@ public class DetailedEvent implements Parcelable {
         title = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
+        mStartTime = in.readString();
       //  owner = (User) in.readValue(User.class.getClassLoader());
         address = in.readString();
         if (in.readByte() == 0x01) {
