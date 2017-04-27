@@ -51,6 +51,7 @@ import java.util.concurrent.Executor;
 
 import www.gatherup.com.gatherup.activities.CreateAccountActivity;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.data.JsonTask;
 import www.gatherup.com.gatherup.data.User;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
@@ -74,6 +75,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Get events from API 3 miles from zip: 11735
+        new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
 
         status_TV = (TextView)findViewById(R.id.tvSignInStatus);
 
