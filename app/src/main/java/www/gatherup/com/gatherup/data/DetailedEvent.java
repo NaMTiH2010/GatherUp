@@ -76,7 +76,9 @@ public class DetailedEvent implements Parcelable {
     }
 
     public String getStartTime() {
-        if(mStartTime != null && mStartTime.length()>1){return mStartTime;}
+        if (mStartTime == null )
+            mStartTime = "12:00PM";
+        if(mStartTime.length()>1){return mStartTime;}
         else{return "12:00PM";}
 
     }

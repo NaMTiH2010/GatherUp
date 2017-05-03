@@ -1,6 +1,7 @@
 package www.gatherup.com.gatherup.data;
 
 import android.os.AsyncTask;
+import android.text.Html;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,7 +138,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
                 // Optional
                 if(jsonEvent.has("description")){
-                    currentEvent.setDescription(jsonEvent.getString("description"));
+                    currentEvent.setDescription(android.text.Html.fromHtml( jsonEvent.getString("description"), Html.FROM_HTML_MODE_COMPACT).toString());
                 }
 
                 // Optional in case it's needed
