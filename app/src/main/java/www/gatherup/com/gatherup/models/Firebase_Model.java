@@ -27,8 +27,11 @@ public class Firebase_Model {
     private DatabaseReference mDatabase;
     private DatabaseReference mPostReference;
 
+    private int childCount;
     private FirebaseAuth mAuth;
-
+    private ChildEventListener mEventAttendeesCountListener;
+    private ChildEventListener mAllEventListener;
+    private ChildEventListener mRegisteredEventListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mAuthUser;
     private static final Firebase_Model sFirebase_model = new Firebase_Model();
@@ -36,7 +39,7 @@ public class Firebase_Model {
     public static Firebase_Model get(){
         return sFirebase_model;
     }
-    private Firebase_Model(){
+    private Firebase_Model() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance();
@@ -54,6 +57,55 @@ public class Firebase_Model {
                     Log.d(TAG, "Currently signed out");
                 }
             }
+        };
+        mEventAttendeesCountListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                childCount = (int) dataSnapshot.getChildrenCount();
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+
+        mRegisteredEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey();
+                if(!key.isEmpty()){
+                    findEventByID(key);
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+
+        mAllEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                Event ev = dataSnapshot.getValue(Event.class);
+                UserModel.get().addEvent(ev);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         };
     }
 
@@ -124,85 +176,17 @@ public class Firebase_Model {
     }
 
     public void setRegisteredEventListener() {
-        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String key = dataSnapshot.getKey();
-                if(!key.isEmpty()){
-                    findEventByID(key);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(mRegisteredEventListener);
+    }
+    public void removeRegisteredEventListener(){
+        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).removeEventListener(mRegisteredEventListener);
     }
     public void setAllEventListener() {
-
-       /* mDatabase.child("events").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                UserModel.get().getEvents().clear();
-                for(DataSnapshot child : children){
-                    Event e = child.getValue(Event.class);
-                    UserModel.get().addEvent(e);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Nothing Done");
-            }
-        });*/
-
-        mDatabase.child("events").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Event ev = dataSnapshot.getValue(Event.class);
-                UserModel.get().addEvent(ev);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mDatabase.child("events").addChildEventListener(mAllEventListener);
     }
-
+    public void removeAllEventListener(){
+        mDatabase.child("events").removeEventListener(mAllEventListener);
+    }
     public void addEvent(Event e){
         // Get Unique Key For Event
         String key = mDatabase.child("events").push().getKey();
