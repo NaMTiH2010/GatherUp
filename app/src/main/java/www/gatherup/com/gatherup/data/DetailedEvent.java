@@ -69,7 +69,15 @@ public class DetailedEvent implements Parcelable {
         this.category = e.getCategory();
         this.Description = e.getDescription();
         this.eventID = 0;
-        this.owner = new User();
+
+        // If event is from API, make the user hold only the url
+        if(e.getCreator().startsWith("http")){
+            String h = e.getCreator();
+            this.owner = new User(h,h,h);
+        }else{
+            this.owner = new User();
+        }
+
         this.atendeesList = new ArrayList<>();
         this.rating = 0;
 

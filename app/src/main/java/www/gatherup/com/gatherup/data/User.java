@@ -27,7 +27,9 @@ public class User {//implements Parcelable {
     //private ArrayList<DetailedEvent> mCreatedEventsList;
 
 
-    public User(){}
+    public User(){
+        this("", "", "");
+    }
 
     public User(String username, String fullName, String email) {
         this.mUsername = username;
