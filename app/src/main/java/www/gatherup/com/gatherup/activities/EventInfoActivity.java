@@ -56,7 +56,9 @@ public class EventInfoActivity extends AppCompatActivity {
                 " to " + mDetailedEvent.getEndDate().get(Calendar.HOUR) + ":" + mDetailedEvent.getEndDate().get(Calendar.MINUTE) +
                 " " + mDetailedEvent.getEndDate().getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault()));*/
         addressTv.setText(mDetailedEvent.getAddress());
-        hostedByTv.setText(mDetailedEvent.getOwner().getFullName());
+
+        hostedByTv.setText((mDetailedEvent.getOwner().getEmail().startsWith("http")) ? "Meetup.com": mDetailedEvent.getOwner().getFullName());
+
         rsvpTv.setText(mDetailedEvent.getAtendeesList().size() + " people are going");
         description.setText(mDetailedEvent.getDescription());
 
