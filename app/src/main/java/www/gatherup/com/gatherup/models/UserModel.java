@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.DetailedUser;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.User;
 
@@ -16,6 +17,8 @@ public class UserModel {
     private ArrayList<Event> mRegisteredEvents = new ArrayList<>();
     private ArrayList<Event> mEvents = new ArrayList<>();
     private ArrayList<User> mFriends = new ArrayList<>();
+    private DetailedEvent mCurrentDetailedEvent;
+    private DetailedUser mCurrentDetailedUser;
     private String mAccountName;
     //private String mAlias;
     private String mEmail;
@@ -29,7 +32,15 @@ public class UserModel {
 
         return sUserModel;
     }
-
+   /* public void removeYourEventsFromAllEvents(){
+        for(Event e : mEvents){
+            for (Event re : mRegisteredEvents){
+                if(e.getId() == re.getId()){
+                    mEvents.remove(e);
+                }
+            }
+        }
+    }*/
     public ArrayList<Event> getRegisteredDetailedEvents() {
         return mRegisteredEvents;
     }
@@ -78,4 +89,19 @@ public class UserModel {
         }*/
     }
 
+    public DetailedEvent getCurrentDetailedEvent() {
+        return mCurrentDetailedEvent;
+    }
+
+    public void setCurrentDetailedEvent(DetailedEvent currentDetailedEvent) {
+        mCurrentDetailedEvent = currentDetailedEvent;
+    }
+
+    public DetailedUser getCurrentDetailedUser() {
+        return mCurrentDetailedUser;
+    }
+
+    public void setCurrentDetailedUser(DetailedUser currentDetailedUser) {
+        mCurrentDetailedUser = currentDetailedUser;
+    }
 }

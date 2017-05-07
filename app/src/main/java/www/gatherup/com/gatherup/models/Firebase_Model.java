@@ -23,27 +23,44 @@ import www.gatherup.com.gatherup.data.User;
  */
 
 public class Firebase_Model {
-    private final String TAG = "FB_SIGNIN";
+    private final String TAG = "Firebase_Model";
     private DatabaseReference mDatabase;
     private DatabaseReference mPostReference;
-
+    private enum EnumUser{Add,Remove}
     private int childCount;
+    private EnumUser mEnum_user = EnumUser.Add;
     private FirebaseAuth mAuth;
     private ChildEventListener mEventAttendeesCountListener;
     private ChildEventListener mAllEventListener;
     private ChildEventListener mRegisteredEventListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mAuthUser;
-    private static final Firebase_Model sFirebase_model = new Firebase_Model();
+    private static Firebase_Model sFirebase_model;
 
     public static Firebase_Model get(){
-        return sFirebase_model;
+        if(sFirebase_model == null) {
+            sFirebase_model = new Firebase_Model();
+            return sFirebase_model;
+        }
+        else{
+            return sFirebase_model;
+        }
     }
     private Firebase_Model() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+/*
         mAuth = FirebaseAuth.getInstance();
-
+        SimpleLogin simpleLogin = new SimpleLogin(f, this);
+        final SimpleLoginAuthenticatedHandler simpleLoginAuthenticatedHandler = new SimpleLoginAuthenticatedHandler() {
+            @Override
+            public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
+                System.out.println("Error: " + error);
+                System.out.println("User: " + user);
+                System.out.println("3rdP: " + user.getThirdPartyUserData());
+            }
+        };
+        simpleLogin.checkAuthStatus(simpleLoginAuthenticatedHandler);*/
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -61,12 +78,17 @@ public class Firebase_Model {
         mEventAttendeesCountListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                childCount = (int) dataSnapshot.getChildrenCount();
+                String key = dataSnapshot.getKey();
+                Log.d(TAG,"mEventAttendeesCountListener("+key+")");
+                findUserByID_AddAttendee(key);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                findUserByID_RemoveAttendee(key);
+            }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
@@ -187,10 +209,17 @@ public class Firebase_Model {
     public void removeAllEventListener(){
         mDatabase.child("events").removeEventListener(mAllEventListener);
     }
+    public void setEventAttendeesCountListener(String eventKey){
+        mDatabase.child("rsvp").child("event_users").child(eventKey).addChildEventListener(mEventAttendeesCountListener);
+    }
+    public void removeEventAttendeesCountListener(String eventKey){
+        mDatabase.child("rsvp").child("event_users").child(eventKey).removeEventListener(mEventAttendeesCountListener);
+    }
     public void addEvent(Event e){
         // Get Unique Key For Event
         String key = mDatabase.child("events").push().getKey();
         e.setCreator(mAuthUser.getUid());
+        e.setId(key);
         // Send Event To Database
         mDatabase.child("events").child(key).setValue(e);
         // Add Event To User Who Built Event
@@ -216,7 +245,7 @@ public class Firebase_Model {
         });
         //mPostReference.removeEventListener();
     }
-    public void findUserByID(String key){
+    public void findUserForFriendsByID(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()
 
         mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,6 +253,38 @@ public class Firebase_Model {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 UserModel.get().addFriends(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void findUserByID_RemoveAttendee(String key){
+        //mPostReference = FirebaseDatabase.getInstance().getReference()
+        Log.d(TAG,"findUserByID_RemoveAttendee("+key+")");
+        mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                UserModel.get().getCurrentDetailedEvent().removeAttendee(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void findUserByID_AddAttendee(String key){
+        //mPostReference = FirebaseDatabase.getInstance().getReference()
+        Log.d(TAG,"findUserByID_AddAttendee("+key+")");
+        mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                UserModel.get().getCurrentDetailedEvent().addAttendee(user);
             }
 
             @Override

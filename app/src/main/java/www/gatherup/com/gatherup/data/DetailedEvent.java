@@ -10,47 +10,50 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import www.gatherup.com.gatherup.activities.EventInfoActivity;
+
 /**
  * Created by edwinsventura on 3/20/17.
  */
 
-public class DetailedEvent implements Parcelable {
-    private int eventID;
+public class DetailedEvent{
+    private String eventID;
     private String title;
     private double latitude;
     private double longitude;
     private User owner;
     private String address;
-    private ArrayList<User> atendeesList;
+    private ArrayList<User> attendeesList;
     private Calendar startDate;
     private Calendar endDate;
     private String Description;
     private String category;
     private double rating;
     private String mStartTime;
-    public DetailedEvent(){
-        this(null, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
-    }
+    private EventInfoActivity activity;
+    /*   public DetailedEvent(){
+           this(null, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
+       }
 
-    public DetailedEvent(Context context){
-        this(context, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
-    }
+       public DetailedEvent(Context context){
+           this(context, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
+       }
 
-    public DetailedEvent(Context context, String title, double latitude, double longitude, Calendar startDate, Calendar endDate, String description, String category) {
-        this.title = title;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        address = context!=null? AddressGenerator.getAddressLine(context, latitude, longitude): "No valid address";
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.category = category;
-        Description = description;
-        eventID = 0;
-        owner = new User();
-        atendeesList = new ArrayList<>();
-        rating = 0.0;
-    }
-    public DetailedEvent(Event e){
+       public DetailedEvent(Context context, String title, double latitude, double longitude, Calendar startDate, Calendar endDate, String description, String category) {
+           this.title = title;
+           this.latitude = latitude;
+           this.longitude = longitude;
+           address = context!=null? AddressGenerator.getAddressLine(context, latitude, longitude): "No valid address";
+           this.startDate = startDate;
+           this.endDate = endDate;
+           this.category = category;
+           Description = description;
+           eventID = "";
+           owner = new User();
+           attendeesList = new ArrayList<>();
+           rating = 0.0;
+       }*/
+    public DetailedEvent(Event e, EventInfoActivity activity){
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         try {
             Calendar cal = Calendar.getInstance();
@@ -68,12 +71,13 @@ public class DetailedEvent implements Parcelable {
         this.address = e.getAddress() + " "+ e.getCity() + " "+ e.getState()+ " "+ e.getZipcode();
         this.category = e.getCategory();
         this.Description = e.getDescription();
-        this.eventID = 0;
+        this.eventID = e.getId();
         this.owner = new User();
-        this.atendeesList = new ArrayList<>();
+        this.attendeesList = new ArrayList<>();
         this.rating = 0;
-
+        this.activity = activity;
     }
+
 
     public String getStartTime() {
         if (mStartTime == null )
@@ -87,10 +91,10 @@ public class DetailedEvent implements Parcelable {
         mStartTime = startTime;
     }
 
-    public int getEventID() {
+    public String getEventID() {
         return eventID;
     }
-    public void setEventID(int eventID) {
+    public void setEventID(String eventID) {
         this.eventID = eventID;
     }
 
@@ -122,11 +126,19 @@ public class DetailedEvent implements Parcelable {
         this.owner = owner;
     }
 
-    public ArrayList<User> getAtendeesList() {
-        return atendeesList;
+    public ArrayList<User> getAttendeesList() {
+        return attendeesList;
     }
-    public void setAtendeesList(ArrayList<User> atendeesList) {
+    /*public void setAtendeesList(ArrayList<User> atendeesList) {
         this.atendeesList = atendeesList;
+    }*/
+    public void addAttendee(User user){
+        attendeesList.add(user);
+        activity.rsvpTv.setText(""+attendeesList.size());
+    }
+    public void removeAttendee(User user){
+        attendeesList.remove(user);
+        activity.rsvpTv.setText(""+attendeesList.size());
     }
 
     public Calendar getStartDate() {
@@ -171,68 +183,6 @@ public class DetailedEvent implements Parcelable {
         this.address = address;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(eventID);
-        dest.writeString(title);
-        dest.writeString(mStartTime);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
-//        dest.writeValue(owner);
-        dest.writeString(address);
-        if (atendeesList == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(atendeesList);
-        }
-        dest.writeValue(startDate);
-        dest.writeValue(endDate);
-        dest.writeString(Description);
-        dest.writeString(category);
-        dest.writeDouble(rating);
-    }
-
-    protected DetailedEvent(Parcel in) {
-        eventID = in.readInt();
-        title = in.readString();
-        latitude = in.readDouble();
-        longitude = in.readDouble();
-        mStartTime = in.readString();
-      //  owner = (User) in.readValue(User.class.getClassLoader());
-        address = in.readString();
-        if (in.readByte() == 0x01) {
-            atendeesList = new ArrayList<User>();
-            in.readList(atendeesList, User.class.getClassLoader());
-        } else {
-            atendeesList = null;
-        }
-        startDate = (Calendar) in.readValue(Calendar.class.getClassLoader());
-        //startDate = (GregorianCalendar) in.readSerializable();
-        endDate = (Calendar) in.readValue(Calendar.class.getClassLoader());
-        //endDate = (GregorianCalendar) in.readSerializable();
-        //
-        Description = in.readString();
-        category = in.readString();
-        rating = in.readDouble();
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<DetailedEvent> CREATOR = new Parcelable.Creator<DetailedEvent>() {
-        @Override
-        public DetailedEvent createFromParcel(Parcel in) {
-            return new DetailedEvent(in);
-        }
-
-        @Override
-        public DetailedEvent[] newArray(int size) {
-            return new DetailedEvent[size];
-        }
-    };
 
 
 

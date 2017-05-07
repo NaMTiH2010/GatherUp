@@ -68,6 +68,7 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
         // Create mock eventlist
+        /*UserModel.get().removeYourEventsFromAllEvents();*/
         mEventList = UserModel.get().getEvents();
         //mEventList = new ArrayList<>();
         /*new ArrayList<>();

@@ -17,6 +17,7 @@ public class Event {
     private String mState;
     private String mZipcode;
     private String mDescription;
+    private String mId;
    // private HashMap<String,Boolean> mRegisteredUsers;
 
     private String mCreator;
@@ -167,5 +168,21 @@ public class Event {
         mRegisteredUsers = registeredUsers;
     }*/
 
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
+    }
+
+   /* public boolean equals(Event e){
+        if(){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }*/
 
 }

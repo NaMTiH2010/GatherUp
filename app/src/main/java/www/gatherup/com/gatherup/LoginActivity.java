@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                         else {
                             Toast.makeText(LoginActivity.this, "Sign in failed", Toast.LENGTH_SHORT).show();

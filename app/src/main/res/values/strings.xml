@@ -123,4 +123,10 @@
 
     <string name="title_activity_create_account">Create Account</string>
     <string name="acc_creation_username">EampleUserName</string>
+    <string name="people_are_going">people are going</string>
+    <string name="address">Address</string>
+    <string name="day">Day</string>
+    <string name="hosted_by">Hosted by</string>
+    <string name="details">Details</string>
+    <string name="report">Report</string>
 </resources>
