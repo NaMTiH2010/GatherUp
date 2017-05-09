@@ -1,7 +1,7 @@
 package www.gatherup.com.gatherup.activities;
 
 import android.content.Intent;
-import android.nfc.Tag;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +49,9 @@ public class EventInfoActivity extends AppCompatActivity {
 
 
         editBtn.setVisibility(View.GONE);
+        if (mDetailedEvent.getOwner().getEmail().startsWith("http")){
+            rsvpBtn.setText("Go to Event Page");
+        }
 
         titleTv.setText(mDetailedEvent.getTitle());
         dayTv.setText(mDetailedEvent.getStartDate().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
@@ -58,16 +61,25 @@ public class EventInfoActivity extends AppCompatActivity {
                 " to " + mDetailedEvent.getEndDate().get(Calendar.HOUR) + ":" + mDetailedEvent.getEndDate().get(Calendar.MINUTE) +
                 " " + mDetailedEvent.getEndDate().getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault()));*/
         addressTv.setText(mDetailedEvent.getAddress());
-        hostedByTv.setText(mDetailedEvent.getOwner().getFullName());
+
+        hostedByTv.setText((mDetailedEvent.getOwner().getEmail().startsWith("http")) ? "Meetup.com": mDetailedEvent.getOwner().getFullName());
         rsvpTv.setText(mDetailedEvent.getAttendeesList().size() + " people are going");
+
         description.setText(mDetailedEvent.getDescription());
 
         rsvpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"You succesfully registered", Toast.LENGTH_SHORT).show();
-                rsvpBtn.setEnabled(false);
+                if (mDetailedEvent.getOwner().getEmail().startsWith("http")){
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDetailedEvent.getOwner().getEmail()));
+                    startActivity(intent);
+                }/*else{
+                    Toast.makeText(getApplicationContext(),"You succesfully registered", Toast.LENGTH_SHORT).show();
+                    rsvpBtn.setEnabled(false);
 
+                    //TODO actually report mDetailedEvent
+                    rsvpTv.setText(mDetailedEvent.getAtendeesList().size()+1 + " people are going");
+                }*/
                 //TODO actually report mDetailedEvent
                 rsvpTv.setText(mDetailedEvent.getAttendeesList().size()+1 + " people are going");
             }

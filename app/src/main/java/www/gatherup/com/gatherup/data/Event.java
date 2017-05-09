@@ -41,7 +41,7 @@ public class Event {
         this.mState = state;
         this.mZipcode = zipcode;
         this.mDescription = description;
-        //this.mCreator = creator;
+        this.mCreator = "";
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mRating = rating;

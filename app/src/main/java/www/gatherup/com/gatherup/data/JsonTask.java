@@ -109,7 +109,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
                 // Mandatory
                 if (jsonEvent.has("name")){
-                    currentEvent.setTitle(jsonEvent.getString("name"));
+                    currentEvent.setTitle("(M)" + jsonEvent.getString("name"));
                 }else continue;
 
                 // Optional
@@ -146,9 +146,10 @@ public class JsonTask extends AsyncTask<String,String,String> {
                     int numberAtendees = jsonEvent.getInt("yes_rsvp_count");
                 }
 
-                // Optional in case it's needed
+                // Mandatory this is going to be the owner
                 if(jsonEvent.has("event_url")){
                     String url = jsonEvent.getString("event_url");
+                    currentEvent.setCreator(url);
                 }
 
                 events.add(currentEvent);

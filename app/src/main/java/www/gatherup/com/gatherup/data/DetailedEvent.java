@@ -73,7 +73,18 @@ public class DetailedEvent{
         this.category = e.getCategory();
         this.Description = e.getDescription();
         this.eventID = e.getId();
-        this.owner = new User();
+        //this.owner = new User();
+        //this.attendeesList = new ArrayList<>();
+
+        // If event is from API, make the user hold only the url
+        if(e.getCreator().startsWith("http")){
+            String h = e.getCreator();
+            this.owner = new User(h,h,h);
+            this.eventID = "API";
+        }else{
+            this.owner = new User();
+        }
+
         this.attendeesList = new ArrayList<>();
         this.rating = 0;
         this.activity = activity;
