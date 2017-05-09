@@ -21,6 +21,7 @@ public class Event {
     private String mDescription;
     private String mId;
     private boolean hasPicture;
+    private int mAmountOfPeople;
    // private HashMap<String,Boolean> mRegisteredUsers;
 
     private String mCreator;
@@ -31,7 +32,7 @@ public class Event {
     public Event(){}
     public Event(String title,String date,String startTime,int maxCapacity, String category,
                  String address,String city,String state, String zipcode,String description,
-                 double latitude,double longitude,int rating){
+                 double latitude,double longitude,int rating, int amountOfPeople){
         this.mTitle = title;
         this.mDate = date;
         this.mStartTime = startTime;
@@ -46,11 +47,19 @@ public class Event {
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mRating = rating;
+        this.mAmountOfPeople = amountOfPeople;
         //mRegisteredUsers = new HashMap<>();
     }
     /*public void addRegisteredUser(String userID){
         mRegisteredUsers.put(userID,true);
     }*/
+
+    public int getAmountOfPeople() {
+        return mAmountOfPeople;
+    }
+    public void setAmountOfPeople(int mAmountOfPeople) {
+        this.mAmountOfPeople = mAmountOfPeople;
+    }
 
     public boolean isHasPicture() {
         return hasPicture;

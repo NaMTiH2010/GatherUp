@@ -2,6 +2,7 @@ package www.gatherup.com.gatherup.data;
 
 import android.os.AsyncTask;
 import android.text.Html;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,13 +145,19 @@ public class JsonTask extends AsyncTask<String,String,String> {
                 // Optional in case it's needed
                 if(jsonEvent.has("yes_rsvp_count")){
                     int numberAtendees = jsonEvent.getInt("yes_rsvp_count");
+                    currentEvent.setAmountOfPeople(numberAtendees);
+                    Log.d("BUG", "yes_rsvp = "+ currentEvent.getAmountOfPeople());
+                }else{
+                    currentEvent.setAmountOfPeople(0);
                 }
 
                 // Mandatory this is going to be the owner
                 if(jsonEvent.has("event_url")){
                     String url = jsonEvent.getString("event_url");
                     currentEvent.setCreator(url);
-                }
+                } else continue;
+
+
 
                 events.add(currentEvent);
             }

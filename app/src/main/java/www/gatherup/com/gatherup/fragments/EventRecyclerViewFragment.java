@@ -166,7 +166,7 @@ public class EventRecyclerViewFragment  extends Fragment {
             location.setText(mEvent.getAddress()+ " "+ mEvent.getCity() + " "+ mEvent.getState()+ " "+ mEvent.getZipcode());
             dayAndTime.setText(mEvent.getDate()+ " "+ mEvent.getStartTime());
             category.setText(mEvent.getCategory());
-            numberOfPeople.setText("RSVP: " + String.valueOf(0));
+            numberOfPeople.setText("RSVP: " + String.valueOf(mEvent.getAmountOfPeople()));
         }
 
         @Override

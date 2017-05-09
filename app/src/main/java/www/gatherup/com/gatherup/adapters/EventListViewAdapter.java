@@ -2,6 +2,7 @@ package www.gatherup.com.gatherup.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,8 @@ public class EventListViewAdapter extends ArrayAdapter<Event> {
         location.setText(someEvent.getAddress()+ " "+ someEvent.getCity() + " "+ someEvent.getState()+ " "+ someEvent.getZipcode());
         dayAndTime.setText(someEvent.getDate()+ " "+ someEvent.getStartTime());
         category.setText(someEvent.getCategory());
-        numberOfPeople.setText("RSVP: " + String.valueOf(0));
+        //numberOfPeople.setText("RSVP: " + String.valueOf(someEvent.getAmountOfPeople()));
+        Log.d("BUG", "yes_rsvp_adapter = "+ someEvent.getAmountOfPeople());
 
 
         return convertView;

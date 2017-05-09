@@ -89,7 +89,7 @@ public class CreateEventActivity extends AppCompatActivity {
                             startTime_ET.getText().toString(), Integer.parseInt(maxCap_ET.getText().toString()),
                             category_Spin.getSelectedItem().toString(), address_ET.getText().toString(),
                             city_ET.getText().toString(), state_ET.getText().toString(), zipcode_ET.getText().toString(),
-                            description_ET.getText().toString(), loc.getLatitude(), loc.getLongitude(), 0),addedPicture);
+                            description_ET.getText().toString(), loc.getLatitude(), loc.getLongitude(), 0, 0),addedPicture);
 
                     Intent intent = new Intent(CreateEventActivity.this, HomeScreenActivity.class);
                     startActivity(intent);
