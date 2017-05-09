@@ -68,8 +68,6 @@ public class EventListFragment extends Fragment {
             mEventArrayList = getArguments().getParcelableArrayList(ARG_PARAM_EVENTLIST);*/
 
         //}
-
-
     }
 
     @Override
@@ -92,7 +90,7 @@ public class EventListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ListView eventListView = (ListView)view.findViewById(R.id.eventlist_fragment_listview);
+        final ListView eventListView = (ListView)view.findViewById(R.id.event_recycler_view);
         // TODO This is using GlobalAppState
 
 

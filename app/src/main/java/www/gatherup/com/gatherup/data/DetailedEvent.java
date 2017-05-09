@@ -31,6 +31,7 @@ public class DetailedEvent{
     private double rating;
     private String mStartTime;
     private EventInfoActivity activity;
+    private int mAmountOfPeopleAttending;
     /*   public DetailedEvent(){
            this(null, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
        }

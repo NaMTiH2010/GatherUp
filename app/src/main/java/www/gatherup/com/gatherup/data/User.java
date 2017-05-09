@@ -14,7 +14,7 @@ import java.util.List;
 public class User {//implements Parcelable {
     //private int userId;
     private String mUsername;
-    //public String mUserID;
+    private String mUserID;
     private String mFullName;
     private String mEmail;
 /*    private HashMap<String,Boolean> mEvents;
@@ -35,7 +35,7 @@ public class User {//implements Parcelable {
         this.mEmail = email;
         /*mEvents = new HashMap<>();
         mFollowing = new HashMap<>();*/
-        //userId = 0;
+        mUserID = "";
         //passwordHash = "passwordHash";
         //latitude = 0.0;
         //longitude = 0.0;
@@ -66,7 +66,15 @@ public class User {//implements Parcelable {
         mEmail = email;
     }
 
-/*    public HashMap<String,Boolean> getEvents() {
+    public String getUserID() {
+        return mUserID;
+    }
+
+    public void setUserID(String userID) {
+        mUserID = userID;
+    }
+
+    /*    public HashMap<String,Boolean> getEvents() {
         return mEvents;
     }
 

@@ -11,6 +11,7 @@ import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.fragments.EventListFragment;
+import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
 
 public class SearchListActivity extends AppCompatActivity implements EventListFragment.OnFragmentInteractionListener{
 
@@ -19,9 +20,15 @@ public class SearchListActivity extends AppCompatActivity implements EventListFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
 
-        EventListFragment allEventsListFragment = EventListFragment.newInstance();
+
+        EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
         FragmentManager manager= getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.search_event_list_content, allEventsListFragment).commit();
+
+
+        /*EventListFragment allEventsListFragment = EventListFragment.newInstance();
+        FragmentManager manager= getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.search_event_list_content, allEventsListFragment).commit();*/
     }
 
     @Override

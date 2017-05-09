@@ -74,11 +74,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase_Model.get();
+        UserModel.get();
+
         setContentView(R.layout.activity_login);
 
         // Get events from API 3 miles from zip: 11735
-        new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
-
+        /*new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
+        Firebase_Model.get().setAllEventListener();*/
         status_TV = (TextView)findViewById(R.id.tvSignInStatus);
 
         // Set up click handlers and view item references
@@ -92,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // TODO for testing purposes only
         etPass.setText("password");
         etEmail.setText("test12@test.com");
-        Firebase_Model.get().setAllEventListener();
+
     }
 
     /**
@@ -104,6 +107,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         // TODO: add the AuthListener
         Firebase_Model.get().addAuthListener();
+        if(Firebase_Model.get().isUserConnected()){
+            //Firebase_Model.get().
+            Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+            Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     @Override
@@ -175,9 +185,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             System.out.println("Nothing Done");
-                            Firebase_Model.get().setMainUser();
+                            //Firebase_Model.get().setMainUser();
                             //Firebase_Model.get().getRegFake();
-                            Firebase_Model.get().setRegisteredEventListener();
+                            //Firebase_Model.get().setRegisteredEventListener();
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();

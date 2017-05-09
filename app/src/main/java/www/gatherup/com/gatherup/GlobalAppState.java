@@ -1,6 +1,7 @@
 package www.gatherup.com.gatherup;
 
 import android.app.Application;
+import android.databinding.ObservableArrayList;
 
 import java.util.ArrayList;
 
@@ -23,8 +24,8 @@ public class GlobalAppState extends Application {
     private ArrayList<Event> mFilteredEvents = new ArrayList<>();
 
 
-    public ArrayList<Event> getNearByEvents(double latitude, double longitude, double mileRadius){
-        ArrayList<Event> nearbyEvents = new ArrayList<>();
+    public ObservableArrayList<Event> getNearByEvents(double latitude, double longitude, double mileRadius){
+        ObservableArrayList<Event> nearbyEvents = new ObservableArrayList<>();
 
         for(Event aEvent : mEventList){
             if (distFrom(latitude, longitude, aEvent.getLatitude(), aEvent.getLongitude()) < mileRadius){

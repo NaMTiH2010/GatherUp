@@ -1,5 +1,7 @@
 package www.gatherup.com.gatherup.data;
 
+import android.databinding.ObservableList;
+
 import java.util.HashMap;
 
 /**

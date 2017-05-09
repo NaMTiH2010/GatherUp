@@ -12,6 +12,7 @@ import www.gatherup.com.gatherup.GlobalAppState;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.fragments.EventListFragment;
+import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
 import www.gatherup.com.gatherup.models.UserModel;
 
 public class MyEventsActivity extends AppCompatActivity implements EventListFragment.OnFragmentInteractionListener{
@@ -23,10 +24,15 @@ public class MyEventsActivity extends AppCompatActivity implements EventListFrag
 
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
         if(!UserModel.get().getRegisteredDetailedEvents().isEmpty()) {
-            appState.setFilteredEvents(UserModel.get().getRegisteredDetailedEvents());
+            UserModel.get().setFilteredEvents(UserModel.get().getRegisteredDetailedEvents());
+            //appState.setFilteredEvents(UserModel.get().getRegisteredDetailedEvents());
             //
-            EventListFragment allEventsListFragment = EventListFragment.newInstance();
+            /*EventListFragment allEventsListFragment = EventListFragment.newInstance();
             FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.my_events_content, allEventsListFragment).commit();*/
+
+            EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
+            FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.my_events_content, allEventsListFragment).commit();
         }
     }

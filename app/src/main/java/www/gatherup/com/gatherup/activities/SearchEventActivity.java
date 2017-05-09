@@ -2,6 +2,7 @@ package www.gatherup.com.gatherup.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.databinding.ObservableArrayList;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ import www.gatherup.com.gatherup.GlobalAppState;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.models.UserModel;
 
 public class SearchEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -111,12 +113,12 @@ public class SearchEventActivity extends AppCompatActivity implements DatePicker
 
     private void filter(){
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
-        ArrayList<Event> aEvents;
+        ObservableArrayList<Event> aEvents;
         if (radiusFilter > 0 ){
-            aEvents = (ArrayList<Event>) appState.getNearByEvents(40.7525, -73.4287, radiusFilter).clone();
+            aEvents =  (ObservableArrayList<Event>)UserModel.get().getNearByEvents(40.7525, -73.4287, radiusFilter).clone(); //appState.getNearByEvents(40.7525, -73.4287, radiusFilter).clone();
         }
         else {
-            aEvents = (ArrayList<Event>) appState.getEventList().clone();
+            aEvents = (ObservableArrayList<Event>)UserModel.get().getEvents().clone(); //appState.getEventList().clone();
         }
 
         int dateTvLength = dateTv.getText().length();
@@ -152,8 +154,8 @@ public class SearchEventActivity extends AppCompatActivity implements DatePicker
                 }
             }
         }
-
-        appState.setFilteredEvents(aEvents);
+        UserModel.get().setFilteredEvents(aEvents);
+        //appState.setFilteredEvents(aEvents);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package www.gatherup.com.gatherup.models;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -14,8 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import www.gatherup.com.gatherup.HomeScreenActivity;
+import www.gatherup.com.gatherup.LoginActivity;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.data.JsonTask;
 import www.gatherup.com.gatherup.data.User;
 
 /**
@@ -40,38 +44,52 @@ public class Firebase_Model {
     public static Firebase_Model get(){
         if(sFirebase_model == null) {
             sFirebase_model = new Firebase_Model();
-            return sFirebase_model;
+
         }
-        else{
             return sFirebase_model;
-        }
     }
     private Firebase_Model() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-/*
+
         mAuth = FirebaseAuth.getInstance();
-        SimpleLogin simpleLogin = new SimpleLogin(f, this);
-        final SimpleLoginAuthenticatedHandler simpleLoginAuthenticatedHandler = new SimpleLoginAuthenticatedHandler() {
+        mAuthUser = mAuth.getCurrentUser();
+
+        mAllEventListener = new ChildEventListener() {
             @Override
-            public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
-                System.out.println("Error: " + error);
-                System.out.println("User: " + user);
-                System.out.println("3rdP: " + user.getThirdPartyUserData());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                Event ev = dataSnapshot.getValue(Event.class);
+                UserModel.get().addEvent(ev);
             }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         };
-        simpleLogin.checkAuthStatus(simpleLoginAuthenticatedHandler);*/
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "Signed in: " + user.getUid());
+                //FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (mAuth.getCurrentUser() != null){
+                    mAuthUser = mAuth.getCurrentUser();
+                    setMainUser();
+                    //Firebase_Model.get().getRegFake();
+                    setAllEventListener();
+                    setRegisteredEventListener();
+
+
+                    Log.d(TAG, "Signed in HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + mAuthUser.getUid());
                 } else {
-                    // User is signed out
-                    Log.d(TAG, "Currently signed out");
+
+                    removeAllEventListener();
+                    UserModel.get().refresh();
+                    Log.d(TAG, "Currently signed out HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
                 }
             }
         };
@@ -113,22 +131,7 @@ public class Firebase_Model {
             public void onCancelled(DatabaseError databaseError) {}
         };
 
-        mAllEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Event ev = dataSnapshot.getValue(Event.class);
-                UserModel.get().addEvent(ev);
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
+
     }
 
     // START Authentication Methods
@@ -142,11 +145,9 @@ public class Firebase_Model {
     }
 
     public boolean isUserConnected(){
-        if(mAuthUser == null)
-            mAuthUser = mAuth.getCurrentUser();
-
-
-        return mAuthUser != null;
+/*        if(mAuthUser == null)
+            mAuthUser = mAuth.getCurrentUser();*/
+        return mAuth.getCurrentUser() != null;
     }
  /*   public void getRegFake(){
         for(Event e : UserModel.get().getEvents()){
@@ -165,16 +166,11 @@ public class Firebase_Model {
     public FirebaseAuth getAuth(){
         return mAuth;
     }
-    /*public DatabaseReference getDatabaseRef(){
-        return mDatabase;
-    }*/
-    // END Authentication Methods
-
-    // START Database Methods
     public void addUserToDataBase(User user,String pass){
         //user.setUserID(mAuthUser.getUid());
         mAuth.signInWithEmailAndPassword(user.getEmail(),pass);
         mAuthUser = mAuth.getCurrentUser();
+        user.setUserID(mAuthUser.getUid());
         mDatabase.child("users").child(mAuthUser.getUid()).setValue(user);
         //mAuthUser = null;
         mAuth.signOut();
@@ -196,14 +192,20 @@ public class Firebase_Model {
                 });
 
     }
+    public void close(){
+        removeAuthListener();
+        mAuth.signOut();
+    }
 
     public void setRegisteredEventListener() {
+
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(mRegisteredEventListener);
     }
     public void removeRegisteredEventListener(){
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).removeEventListener(mRegisteredEventListener);
     }
     public void setAllEventListener() {
+        UserModel.get().refreshAllEvents();
         mDatabase.child("events").addChildEventListener(mAllEventListener);
     }
     public void removeAllEventListener(){

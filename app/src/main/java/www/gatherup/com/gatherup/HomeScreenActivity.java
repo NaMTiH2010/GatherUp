@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,12 +26,16 @@ import www.gatherup.com.gatherup.activities.SearchEventActivity;
 import www.gatherup.com.gatherup.activities.UserProfileActivity;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
+/*
 import www.gatherup.com.gatherup.fragments.EventListFragment;
+*/
+import www.gatherup.com.gatherup.data.JsonTask;
+import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
 public class HomeScreenActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, EventListFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener{//, EventListFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "NewPostActivity";
 
@@ -41,6 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,7 +75,7 @@ public class HomeScreenActivity extends AppCompatActivity
 
         // Create mock eventlist
         /*UserModel.get().removeYourEventsFromAllEvents();*/
-        mEventList = UserModel.get().getEvents();
+        ////mEventList = UserModel.get().getEvents();
         //mEventList = new ArrayList<>();
         /*new ArrayList<>();
 
@@ -107,15 +113,25 @@ public class HomeScreenActivity extends AppCompatActivity
         // TODO this is for trying out GlobalAppState
 
         //appState.setDetailedEventList((ArrayList<DetailedEvent>) mDetailedEventList.clone());
-        appState.setEventList((ArrayList<Event>) mEventList.clone());
-        appState.setFilteredEvents(appState.getEventList());
+        /*appState.setEventList((ArrayList<Event>) mEventList.clone());
+        appState.setFilteredEvents(appState.getEventList());*/
+        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
 
-
-
-
-        EventListFragment allEventsListFragment = EventListFragment.newInstance();
+        EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
         FragmentManager manager= getSupportFragmentManager();
+        //Fragment fragment = manager.findFragmentById(R.id.eventlist_fragment_listview);
         manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
+/*        if (fragment == null) {
+            fragment = new EventRecyclerViewFragment();
+            manager.beginTransaction()
+                    .add(R.id.eventlist_fragment_listview, fragment)
+                    .commit();*/
+
+
+       // manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
+        /*EventListFragment allEventsListFragment = EventListFragment.newInstance();
+        FragmentManager manager= getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();*/
     }
 
     @Override
@@ -169,8 +185,16 @@ public class HomeScreenActivity extends AppCompatActivity
             menuclass = LoginActivity.class;
         }
 
-        if (menuclass != null) {
-            Firebase_Model.get().getAuth().signOut();
+        if(menuclass == LoginActivity.class){
+            Firebase_Model.get().close();
+            //Firebase_Model.get().getAuth().signOut();
+
+            Intent intent = new Intent(HomeScreenActivity.this, menuclass);
+            startActivity(intent);
+            finish();
+
+        }
+        else if (menuclass != null) {
             Intent intent = new Intent(HomeScreenActivity.this, menuclass);
             startActivity(intent);
         }
@@ -182,14 +206,21 @@ public class HomeScreenActivity extends AppCompatActivity
     }
 
 
-    @Override
+ /*   @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    }*/
     @Override
     public void onResume(){
         super.onResume();
-        mEventList = UserModel.get().getEvents();
-    }
 
+        mEventList = UserModel.get().getEvents();
+
+        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+       Firebase_Model.get().removeRegisteredEventListener();
+    }
 }
