@@ -88,7 +88,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //accountCreated = true;
-                                    Firebase_Model.get().addUserToDataBase(new User(mUserName,mFullName,mEmail),password);
+                                    Firebase_Model.get().addUserToDataBase(new User(mUserName,mFullName,mEmail,false,false),password);
                                     Toast.makeText(CreateAccountActivity.this,"User succesfully created", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
                                     startActivity(intent);

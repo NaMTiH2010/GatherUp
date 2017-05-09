@@ -13,6 +13,7 @@ import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.fragments.EventListFragment;
 import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
+import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
 public class MyEventsActivity extends AppCompatActivity implements EventListFragment.OnFragmentInteractionListener{
@@ -36,7 +37,11 @@ public class MyEventsActivity extends AppCompatActivity implements EventListFrag
             manager.beginTransaction().replace(R.id.my_events_content, allEventsListFragment).commit();
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
+        super.onBackPressed();
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
 

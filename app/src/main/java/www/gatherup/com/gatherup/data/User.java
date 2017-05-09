@@ -17,6 +17,8 @@ public class User {//implements Parcelable {
     private String mUserID;
     private String mFullName;
     private String mEmail;
+    private boolean mHasPicture;
+    private boolean mHasProfile;
 /*    private HashMap<String,Boolean> mEvents;
     private HashMap<String,Boolean> mFollowing;*/
     //private String passwordHash;
@@ -28,13 +30,15 @@ public class User {//implements Parcelable {
 
 
     public User(){
-        this("", "", "");
+        this("", "", "",false,false);
     }
 
-    public User(String username, String fullName, String email) {
+    public User(String username, String fullName, String email, boolean hasPicture,boolean hasProfile) {
         this.mUsername = username;
         this.mFullName = fullName;
         this.mEmail = email;
+        this.mHasPicture = hasPicture;
+        this.mHasProfile = hasProfile;
         /*mEvents = new HashMap<>();
         mFollowing = new HashMap<>();*/
         mUserID = "";
@@ -76,7 +80,22 @@ public class User {//implements Parcelable {
         mUserID = userID;
     }
 
-    /*    public HashMap<String,Boolean> getEvents() {
+    public boolean isHasPicture() {
+        return mHasPicture;
+    }
+
+    public void setHasPicture(boolean hasPicture) {
+        mHasPicture = hasPicture;
+    }
+
+    public boolean isHasProfile() {
+        return mHasProfile;
+    }
+
+    public void setHasProfile(boolean hasProfile) {
+        mHasProfile = hasProfile;
+    }
+/*    public HashMap<String,Boolean> getEvents() {
         return mEvents;
     }
 

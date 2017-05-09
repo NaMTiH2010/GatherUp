@@ -79,7 +79,7 @@ public class DetailedEvent{
         // If event is from API, make the user hold only the url
         if(e.getCreator().startsWith("http")){
             String h = e.getCreator();
-            this.owner = new User(h,h,h);
+            this.owner = new User(h,h,h,false,false);
             this.eventID = "API";
         }else{
             this.owner = new User();

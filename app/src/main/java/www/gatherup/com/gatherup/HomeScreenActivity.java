@@ -46,6 +46,8 @@ public class HomeScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        Firebase_Model.get().setAllEventListener();
+        Firebase_Model.get().setFriendsListener();
         new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -213,10 +215,7 @@ public class HomeScreenActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-
         mEventList = UserModel.get().getEvents();
-
-        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
     }
     @Override
     protected void onDestroy(){

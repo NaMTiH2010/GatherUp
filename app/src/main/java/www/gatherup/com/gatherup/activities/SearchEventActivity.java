@@ -157,7 +157,11 @@ public class SearchEventActivity extends AppCompatActivity implements DatePicker
         UserModel.get().setFilteredEvents(aEvents);
         //appState.setFilteredEvents(aEvents);
     }
-
+    @Override
+    public void onBackPressed() {
+        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
+        super.onBackPressed();
+    }
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         dateFilter.set(i, i1, i2);

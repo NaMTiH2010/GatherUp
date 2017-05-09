@@ -20,6 +20,7 @@ public class Event {
     private String mZipcode;
     private String mDescription;
     private String mId;
+    private boolean hasPicture;
    // private HashMap<String,Boolean> mRegisteredUsers;
 
     private String mCreator;
@@ -50,6 +51,15 @@ public class Event {
     /*public void addRegisteredUser(String userID){
         mRegisteredUsers.put(userID,true);
     }*/
+
+    public boolean isHasPicture() {
+        return hasPicture;
+    }
+
+    public void setHasPicture(boolean hasPicture) {
+        this.hasPicture = hasPicture;
+    }
+
     public String getTitle() {
         return mTitle;
     }

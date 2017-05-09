@@ -37,6 +37,7 @@ public class Firebase_Model {
     private ChildEventListener mEventAttendeesCountListener;
     private ChildEventListener mAllEventListener;
     private ChildEventListener mRegisteredEventListener;
+    private ChildEventListener mFriendsListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mAuthUser;
     private static Firebase_Model sFirebase_model;
@@ -80,13 +81,9 @@ public class Firebase_Model {
                     mAuthUser = mAuth.getCurrentUser();
                     setMainUser();
                     //Firebase_Model.get().getRegFake();
-                    setAllEventListener();
                     setRegisteredEventListener();
-
-
                     Log.d(TAG, "Signed in HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + mAuthUser.getUid());
-                } else {
-
+                } else if(mAuth.getCurrentUser() == null) {
                     removeAllEventListener();
                     UserModel.get().refresh();
                     Log.d(TAG, "Currently signed out HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
@@ -119,6 +116,23 @@ public class Firebase_Model {
                 String key = dataSnapshot.getKey();
                 if(!key.isEmpty()){
                     findEventByID(key);
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        mFriendsListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey();
+                if(!key.isEmpty()){
+                    findAndAddFriend(key);
                 }
             }
             @Override
@@ -197,8 +211,15 @@ public class Firebase_Model {
         mAuth.signOut();
     }
 
+    public void setFriendsListener() {
+        UserModel.get().refreshFriends();
+        mDatabase.child("following").child(mAuthUser.getUid()).addChildEventListener(mFriendsListener);
+    }
+    public void removeFriendsListener(){
+        mDatabase.child("following").child(mAuthUser.getUid()).removeEventListener(mFriendsListener);
+    }
     public void setRegisteredEventListener() {
-
+        UserModel.get().refreshAllRegisteredEvents();
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(mRegisteredEventListener);
     }
     public void removeRegisteredEventListener(){
@@ -217,7 +238,7 @@ public class Firebase_Model {
     public void removeEventAttendeesCountListener(String eventKey){
         mDatabase.child("rsvp").child("event_users").child(eventKey).removeEventListener(mEventAttendeesCountListener);
     }
-    public void addEvent(Event e){
+    public void addEvent(Event e,boolean hasPicture){
         // Get Unique Key For Event
         String key = mDatabase.child("events").push().getKey();
         e.setCreator(mAuthUser.getUid());
@@ -287,6 +308,23 @@ public class Firebase_Model {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 UserModel.get().getCurrentDetailedEvent().addAttendee(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void findAndAddFriend(String key){
+        //mPostReference = FirebaseDatabase.getInstance().getReference()
+        Log.d(TAG,"findFriends("+key+")");
+        mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                UserModel.get().addFriends(user);
             }
 
             @Override
