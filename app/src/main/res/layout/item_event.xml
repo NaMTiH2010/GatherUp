@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -10,22 +11,38 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <TextView
-            android:text="day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/item_event_day_ofw"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:text="daynumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:id="@+id/item_event_day_number" />
+            <TextView
+                android:id="@+id/item_event_day_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="daynum"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                android:gravity="start"/>
+
+            <TextView
+                android:id="@+id/item_event_day_ofw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="day"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                android:gravity="end"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/item_event_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@color/app_background" />
     </LinearLayout>
 
 
