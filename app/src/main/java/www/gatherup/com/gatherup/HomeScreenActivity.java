@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import www.gatherup.com.gatherup.activities.CreateEventActivity;
 import www.gatherup.com.gatherup.activities.MyEventsActivity;
@@ -118,6 +119,8 @@ public class HomeScreenActivity extends AppCompatActivity
         /*appState.setEventList((ArrayList<Event>) mEventList.clone());
         appState.setFilteredEvents(appState.getEventList());*/
         UserModel.get().setFilteredEvents(UserModel.get().getEvents());
+        Collections.sort(UserModel.get().getEvents());
+
 
         EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
         FragmentManager manager= getSupportFragmentManager();

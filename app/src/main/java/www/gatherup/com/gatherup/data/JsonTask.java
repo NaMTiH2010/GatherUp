@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -91,6 +92,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
         // Put the API events on the Usermodel events
         UserModel.get().getEvents().addAll(getEventsFromJSON(result));
+        Collections.sort(UserModel.get().getEvents());
 
     }
 

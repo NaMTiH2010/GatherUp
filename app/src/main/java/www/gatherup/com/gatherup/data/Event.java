@@ -1,6 +1,7 @@
 package www.gatherup.com.gatherup.data;
 
 import android.databinding.ObservableList;
+import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * Created by Matthew Luce on 4/12/2017.
  */
 
-public class Event {
+public class Event implements Comparable<Event>{
     private String mTitle;
     private String mDate;
     private String mStartTime;
@@ -195,6 +196,11 @@ public class Event {
 
     public void setId(String id) {
         mId = id;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event o) {
+        return Integer.compare(o.mAmountOfPeople, mAmountOfPeople);
     }
 
    /* public boolean equals(Event e){
