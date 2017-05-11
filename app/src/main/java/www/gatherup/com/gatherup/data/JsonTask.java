@@ -2,6 +2,7 @@ package www.gatherup.com.gatherup.data;
 
 import android.os.AsyncTask;
 import android.text.Html;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -90,13 +92,14 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
         // Put the API events on the Usermodel events
         UserModel.get().getEvents().addAll(getEventsFromJSON(result));
+        Collections.sort(UserModel.get().getEvents());
 
     }
 
     public ArrayList<Event> getEventsFromJSON(String jsonResponse){
         ArrayList<Event> events = new ArrayList<>();
 
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 
         try {
@@ -115,7 +118,9 @@ public class JsonTask extends AsyncTask<String,String,String> {
                 // Optional
                 if (jsonEvent.has("time")){
                     Date tempDate = new Date(jsonEvent.getLong("time"));
-                    currentEvent.setDate(format.format(tempDate));
+                    String[] date_time = format.format(tempDate).split(" ");
+                    currentEvent.setDate(date_time[0]);
+                    currentEvent.setStartTime(date_time[1]+" "+date_time[2]);
                 }
 
                 // Optional
@@ -144,14 +149,21 @@ public class JsonTask extends AsyncTask<String,String,String> {
                 // Optional in case it's needed
                 if(jsonEvent.has("yes_rsvp_count")){
                     int numberAtendees = jsonEvent.getInt("yes_rsvp_count");
+                    currentEvent.setAmountOfPeople(numberAtendees);
+                    Log.d("BUG", "yes_rsvp = "+ currentEvent.getAmountOfPeople());
+                }else{
+                    currentEvent.setAmountOfPeople(0);
                 }
 
                 // Mandatory this is going to be the owner
                 if(jsonEvent.has("event_url")){
                     String url = jsonEvent.getString("event_url");
                     currentEvent.setCreator(url);
-                }
 
+                } else continue;
+
+
+                currentEvent.setId("http");
                 events.add(currentEvent);
             }
 

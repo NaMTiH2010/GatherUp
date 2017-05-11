@@ -17,6 +17,7 @@ import www.gatherup.com.gatherup.activities.EventInfoActivity;
  */
 
 public class DetailedEvent{
+    private Event mEvent;
     private String eventID;
     private String title;
     private double latitude;
@@ -32,29 +33,9 @@ public class DetailedEvent{
     private String mStartTime;
     private EventInfoActivity activity;
     private int mAmountOfPeopleAttending;
-    /*   public DetailedEvent(){
-           this(null, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
-       }
 
-       public DetailedEvent(Context context){
-           this(context, "title", 0.0, 0.0, Calendar.getInstance(), Calendar.getInstance(), "description", "category");
-       }
-
-       public DetailedEvent(Context context, String title, double latitude, double longitude, Calendar startDate, Calendar endDate, String description, String category) {
-           this.title = title;
-           this.latitude = latitude;
-           this.longitude = longitude;
-           address = context!=null? AddressGenerator.getAddressLine(context, latitude, longitude): "No valid address";
-           this.startDate = startDate;
-           this.endDate = endDate;
-           this.category = category;
-           Description = description;
-           eventID = "";
-           owner = new User();
-           attendeesList = new ArrayList<>();
-           rating = 0.0;
-       }*/
     public DetailedEvent(Event e, EventInfoActivity activity){
+        mEvent = e;
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         try {
             Calendar cal = Calendar.getInstance();
@@ -73,10 +54,6 @@ public class DetailedEvent{
         this.category = e.getCategory();
         this.Description = e.getDescription();
         this.eventID = e.getId();
-        //this.owner = new User();
-        //this.attendeesList = new ArrayList<>();
-
-        // If event is from API, make the user hold only the url
         if(e.getCreator().startsWith("http")){
             String h = e.getCreator();
             this.owner = new User(h,h,h,false,false);
@@ -193,6 +170,9 @@ public class DetailedEvent{
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public Event getInnerEvent(){
+        return this.mEvent;
     }
 
 

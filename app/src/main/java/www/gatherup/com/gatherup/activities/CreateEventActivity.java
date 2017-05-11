@@ -6,7 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.media.Image;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,6 +34,7 @@ import www.gatherup.com.gatherup.HomeScreenActivity;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.AddressGenerator;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.fragments.Default_Images_Fragment;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
@@ -51,14 +55,21 @@ public class CreateEventActivity extends AppCompatActivity {
     private int mYear, mMonth,mDay,mHour,mMin;
     private String eventCategory;
     private boolean addedPicture;
-
+    private Button createButton;
+    private Button setIMG_BTN;
+    private Button uploadIMG_BTN;
+    private ImageView event_Img;
+    private static int eventImgType = 0;
+    private static int eventImgNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
-        Button createButton = (Button)findViewById(R.id.createEvent_BTN);
+        uploadIMG_BTN = (Button)findViewById(R.id.upload_BTN);
+        setIMG_BTN = (Button)findViewById(R.id.setIMG_BTN);
+        createButton = (Button)findViewById(R.id.createEvent_BTN);
+        event_Img = (ImageView)findViewById(R.id.imageView2);
         title_ET = (TextView)findViewById(R.id.title_ET);
         description_ET = (TextView)findViewById(R.id.description_ET);
         category_Spin = (Spinner)findViewById(R.id.category_Spin);
@@ -85,19 +96,36 @@ public class CreateEventActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Address Not Found", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Firebase_Model.get().addEvent(new Event(title_ET.getText().toString(), date_ET.getText().toString(),
-                            startTime_ET.getText().toString(), Integer.parseInt(maxCap_ET.getText().toString()),
-                            category_Spin.getSelectedItem().toString(), address_ET.getText().toString(),
-                            city_ET.getText().toString(), state_ET.getText().toString(), zipcode_ET.getText().toString(),
-                            description_ET.getText().toString(), loc.getLatitude(), loc.getLongitude(), 0),addedPicture);
+                    Event tempEvent = new Event(title_ET.getText().toString(), date_ET.getText().toString(),
+                    startTime_ET.getText().toString(), Integer.parseInt(maxCap_ET.getText().toString()),
+                    category_Spin.getSelectedItem().toString(), address_ET.getText().toString(),
+                    city_ET.getText().toString(), state_ET.getText().toString(), zipcode_ET.getText().toString(),
+                    description_ET.getText().toString(), loc.getLatitude(), loc.getLongitude(), 0, 0);
+                    if(eventImgType>0) {
+                        tempEvent.setEvent_type(eventImgType);
+                        tempEvent.setPicNumber(eventImgNumber);
+                    }
+                    Firebase_Model.get().addEvent(tempEvent);
 
                     Intent intent = new Intent(CreateEventActivity.this, HomeScreenActivity.class);
                     startActivity(intent);
                 }
             }
         });
-
-
+        setIMG_BTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showImages();
+                /*fm.beginTransaction().replace(R.id.images_fragment_container, new Default_Images_Fragment()).commit();*/
+            }
+        });
+        uploadIMG_BTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.images_fragment_container, new Default_Images_Fragment()).commit();*/
+            }
+        });
         date_ET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -172,6 +200,14 @@ public class CreateEventActivity extends AppCompatActivity {
         }
         return null;
     }
+    public void showImages(){
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.images_fragment_container);
+        if(fragment == null){
+            fragment = new Default_Images_Fragment();
+            fm.beginTransaction().add(R.id.images_fragment_container,fragment).commit();
+        }
+    }
 
     private DatePickerDialog.OnDateSetListener myDateListener = new
             DatePickerDialog.OnDateSetListener() {
@@ -199,5 +235,9 @@ public class CreateEventActivity extends AppCompatActivity {
     private void showDate(int year, int month, int day) {
         date_ET.setText(new StringBuilder().append(month).append("/")
                 .append(day).append("/").append(year));
+    }
+    public static void setEventsSelectedIMG(int type,int number){
+        eventImgNumber = number;
+        eventImgType = type;
     }
 }

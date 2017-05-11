@@ -1,12 +1,15 @@
 package www.gatherup.com.gatherup.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import www.gatherup.com.gatherup.GlobalAppState;
 import www.gatherup.com.gatherup.MapsActivity;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.Event_Type;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
@@ -34,7 +38,7 @@ public class EventInfoActivity extends AppCompatActivity {
 
         //TODO this is using GlobalAppState
         mDetailedEvent = new DetailedEvent(((GlobalAppState)getApplicationContext()).getCurrentEvent(),this);
-
+        ImageView img = (ImageView)findViewById(R.id.imageView5);
         TextView titleTv = (TextView)findViewById(R.id.event_info_title_tv);
         TextView dayTv = (TextView)findViewById(R.id.event_info_day);
         TextView timetv = (TextView)findViewById(R.id.event_info_time);
@@ -47,7 +51,25 @@ public class EventInfoActivity extends AppCompatActivity {
         Button editBtn = (Button)findViewById(R.id.event_info_edit_btn);
         final Button reportButton = (Button)findViewById(R.id.event_info_report);
 
+        if(mDetailedEvent.getInnerEvent().getId().equals("http")){
+            img.setImageResource(R.drawable.meet_up_large);
+        }
+        else if(mDetailedEvent.getInnerEvent().getEvent_type() == Event_Type.CUSTOM.getTypeNumber()){
+            img.setImageResource(R.drawable.default_event_detailed);
+/*
+                Firebase_Model.get().loadEventIMG(mEventImg,mEvent.getId(),getContext());
+*/
 
+        }
+        else if(mDetailedEvent.getInnerEvent().getEvent_type() == Event_Type.DEFAULT.getTypeNumber()){
+            img.setImageResource(R.drawable.default_event_detailed);
+        }
+        // A STORED PICTURE
+        else{
+            Context c = getApplicationContext();
+            int id = c.getResources().getIdentifier("drawable/small_"+mDetailedEvent.getInnerEvent().getEvent_type()+""+mDetailedEvent.getInnerEvent().getPicNumber(), null, c.getPackageName());
+            img.setImageResource(id);
+        }
         editBtn.setVisibility(View.GONE);
         if (mDetailedEvent.getOwner().getEmail().startsWith("http")){
             rsvpBtn.setText("Go to Event Page");

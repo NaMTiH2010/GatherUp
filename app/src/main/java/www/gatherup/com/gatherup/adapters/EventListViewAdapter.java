@@ -2,6 +2,7 @@ package www.gatherup.com.gatherup.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,9 @@ public class EventListViewAdapter extends ArrayAdapter<Event> {
         TextView shortDay = (TextView)convertView.findViewById(R.id.item_event_day_ofw);
         TextView dayNumber = (TextView)convertView.findViewById(R.id.item_event_day_number);
         TextView title = (TextView)convertView.findViewById(R.id.item_event_title);
+/*
         TextView location = (TextView)convertView.findViewById(R.id.item_event_address);
+*/
         TextView dayAndTime = (TextView)convertView.findViewById(R.id.item_event_date);
         TextView category = (TextView)convertView.findViewById(R.id.item_event_category);
         TextView numberOfPeople = (TextView)convertView.findViewById(R.id.item_event_people);
@@ -61,10 +64,13 @@ public class EventListViewAdapter extends ArrayAdapter<Event> {
         dayNumber.setText(String.valueOf(someEvent.getDate().substring(someEvent.getDate().indexOf("/")+1,someEvent.getDate().lastIndexOf("/"))) );
         title.setText(someEvent.getTitle());
         //location.setText(AddressGenerator.getAddressLine(getContext(), detailedEvent.getLatitude(), detailedEvent.getLongitude()));
+/*
         location.setText(someEvent.getAddress()+ " "+ someEvent.getCity() + " "+ someEvent.getState()+ " "+ someEvent.getZipcode());
+*/
         dayAndTime.setText(someEvent.getDate()+ " "+ someEvent.getStartTime());
         category.setText(someEvent.getCategory());
-        numberOfPeople.setText("RSVP: " + String.valueOf(0));
+        //numberOfPeople.setText("RSVP: " + String.valueOf(someEvent.getAmountOfPeople()));
+        Log.d("BUG", "yes_rsvp_adapter = "+ someEvent.getAmountOfPeople());
 
 
         return convertView;

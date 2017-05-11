@@ -2,10 +2,14 @@ package www.gatherup.com.gatherup.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.databinding.ObservableList.OnListChangedCallback;
 import java.lang.ref.WeakReference;
+
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +17,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +33,9 @@ import www.gatherup.com.gatherup.GlobalAppState;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.activities.EventInfoActivity;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.data.Event_Type;
 import www.gatherup.com.gatherup.data.WeakOnListChangedCallback;
+import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
 /**
@@ -116,12 +126,15 @@ public class EventRecyclerViewFragment  extends Fragment {
         private Event mEvent;
 
         private TextView shortDay;
+        private TextView month;
         private TextView dayNumber;
         private TextView title;
-        private TextView location;
+        //private TextView location;
+        private ProgressBar mProgressBar;
         private TextView dayAndTime;
         private TextView category;
         private TextView numberOfPeople;
+        private ImageView mEventImg;
 
 /*        private TextView mTitleTextView;
         private TextView mDateTextView;
@@ -132,13 +145,17 @@ public class EventRecyclerViewFragment  extends Fragment {
             itemView.setOnClickListener(this);
 
             shortDay = (TextView)itemView.findViewById(R.id.item_event_day_ofw);
+            month = (TextView)itemView.findViewById(R.id.event_month);
             dayNumber = (TextView)itemView.findViewById(R.id.item_event_day_number);
             title = (TextView)itemView.findViewById(R.id.item_event_title);
+/*
             location = (TextView)itemView.findViewById(R.id.item_event_address);
+*/
+            mProgressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             dayAndTime = (TextView)itemView.findViewById(R.id.item_event_date);
             category = (TextView)itemView.findViewById(R.id.item_event_category);
             numberOfPeople = (TextView)itemView.findViewById(R.id.item_event_people);
-
+            mEventImg = (ImageView)itemView.findViewById(R.id.item_event_image);
             /*mTitleTextView = (TextView) itemView.findViewById(R.id.event_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.event_date);
             mSolvedImageView = (ImageView) itemView.findViewById(R.id.event_solved);*/
@@ -160,13 +177,64 @@ public class EventRecyclerViewFragment  extends Fragment {
             }
 
             shortDay.setText(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()) );
+            month.setText(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()) );
             dayNumber.setText(String.valueOf(mEvent.getDate().substring(mEvent.getDate().indexOf("/")+1,mEvent.getDate().lastIndexOf("/"))) );
             title.setText(mEvent.getTitle());
+
+            if(mEvent.getId().equals("http")){
+                mEventImg.setImageResource(R.drawable.meet_up_icon);
+            }
+            else if(mEvent.getEvent_type() == Event_Type.CUSTOM.getTypeNumber()){
+                mEventImg.setImageResource(R.drawable.default_event);
+/*
+                Firebase_Model.get().loadEventIMG(mEventImg,mEvent.getId(),getContext());
+*/
+
+            }
+            else if(mEvent.getEvent_type() == Event_Type.DEFAULT.getTypeNumber()){
+                mEventImg.setImageResource(R.drawable.default_event);
+            }
+            // A STORED PICTURE
+            else{
+                Context c = getContext();
+                int id = c.getResources().getIdentifier("drawable/very_small_"+mEvent.getEvent_type()+""+mEvent.getPicNumber(), null, c.getPackageName());
+                mEventImg.setImageResource(id);
+            }
+
             //location.setText(AddressGenerator.getAddressLine(getContext(), detailedEvent.getLatitude(), detailedEvent.getLongitude()));
+/*
             location.setText(mEvent.getAddress()+ " "+ mEvent.getCity() + " "+ mEvent.getState()+ " "+ mEvent.getZipcode());
-            dayAndTime.setText(mEvent.getDate()+ " "+ mEvent.getStartTime());
+*/
+            if(mEvent.getMaxCapacity() > 0){
+                if(mEvent.getAmountOfPeople() == 0){
+                    mProgressBar.setProgress(0);
+                }
+
+                else{
+                    double dProgress = (((double)mEvent.getAmountOfPeople() / mEvent.getMaxCapacity())*100);
+                    mProgressBar.setProgress((int)dProgress);
+                    if(dProgress < 26){
+                        mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+                    }
+                    else if(dProgress < 51){
+                        mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+                    }
+                    else{
+                        mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+                    }
+                }
+            }
+            else {
+                mProgressBar.setProgress(100);
+                mProgressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));;
+            }
+
+
+
+            // .getIndeterminateDrawable().setColorFilter(0xFFcc0000, PorterDuff.Mode.SRC_IN);
+            dayAndTime.setText(mEvent.getDate()+ "\t"+ mEvent.getStartTime());
             category.setText(mEvent.getCategory());
-            numberOfPeople.setText("RSVP: " + String.valueOf(0));
+            numberOfPeople.setText("RSVP: " + String.valueOf(mEvent.getAmountOfPeople()));
         }
 
         @Override

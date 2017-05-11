@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import www.gatherup.com.gatherup.activities.CreateEventActivity;
 import www.gatherup.com.gatherup.activities.MyEventsActivity;
@@ -71,34 +72,6 @@ public class HomeScreenActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
-
-        // Create mock eventlist
-        /*UserModel.get().removeYourEventsFromAllEvents();*/
-        ////mEventList = UserModel.get().getEvents();
-        //mEventList = new ArrayList<>();
-        /*new ArrayList<>();
-
-        if(UserModel.get().getEvents().size()>0){
-            for(Event e : UserModel.get().getEvents()){
-                mEventList.add(new DetailedEvent(e));
-            }
-        }*/
-
-        //mDetailedEventList.add(new DetailedEvent(UserModel.get().getEvents().get(0)));
-                //
-        /*mDetailedEventList.add(new DetailedEvent(this, "Get together to study Math", 40.7493182, -73.4250478, Calendar.getInstance(), Calendar.getInstance(), "Let's get together in the Library to get ready for the MTH390 Test", "Learning"));
-        mDetailedEventList.add(new DetailedEvent(this, "D&D Friday night", 40.7495182, -73.4230478, Calendar.getInstance(), Calendar.getInstance(), "Friday night is game night. Everyone is invited to come and play D&D. Newcomers are welcome.", "Games"));
-        mDetailedEventList.add(new DetailedEvent(this, "Looking for lost cat", 40.7483182, -73.4230478, Calendar.getInstance(), Calendar.getInstance(), "Whiskers, my little kitten is lost since yesterday, I am organizing a group to look for him. We'll be walking aroud the neighborhood for 2 hours", "Gathering"));
-        mDetailedEventList.add(new DetailedEvent(this, "Programming tutoring session", 40.7490182, -73.4200478, Calendar.getInstance(), Calendar.getInstance(), "Let's get together in the Library to get ready for the MTH390 Test", "Learning"));
-        mDetailedEventList.add(new DetailedEvent(this, "FSC LASSO Dance Night (Students only)", 40.7493442, -73.4234478, Calendar.getInstance(), Calendar.getInstance(), "Friday night is game night. Everyone is invited to come and play D&D. Newcomers are welcome.", "Games"));
-        mDetailedEventList.add(new DetailedEvent(this, "Hike through Bethpage park", 40.7493456, -73.4250000, Calendar.getInstance(), Calendar.getInstance(), "Whiskers, my little kitten is lost since yesterday, I am organizing a group to look for him. We'll be walking aroud the neighborhood for 2 hours", "Gathering"));
-        mDetailedEventList.add(new DetailedEvent(this, "Get together to study Chemistry", 40.7493455, -73.4250111, Calendar.getInstance(), Calendar.getInstance(), "Let's get together in the Library to get ready for the MTH390 Test", "Learning"));
-        mDetailedEventList.add(new DetailedEvent(this, "Watch the Packers win ", 43.4, 40.0, Calendar.getInstance(), Calendar.getInstance(), "Friday night is game night. Everyone is invited to come and play D&D. Newcomers are welcome.", "Games"));
-        mDetailedEventList.add(new DetailedEvent(this, "Zoo trip", 33.3, 41.0, Calendar.getInstance(), Calendar.getInstance(), "Whiskers, my little kitten is lost since yesterday, I am organizing a group to look for him. We'll be walking aroud the neighborhood for 2 hours", "Gathering"));
-*/
         // Create mock category list
         GlobalAppState appState = (GlobalAppState)getApplicationContext();
         appState.getCategories().clear();
@@ -118,11 +91,13 @@ public class HomeScreenActivity extends AppCompatActivity
         /*appState.setEventList((ArrayList<Event>) mEventList.clone());
         appState.setFilteredEvents(appState.getEventList());*/
         UserModel.get().setFilteredEvents(UserModel.get().getEvents());
+        Collections.sort(UserModel.get().getEvents());
 
-        EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
+
+        //EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
         FragmentManager manager= getSupportFragmentManager();
         //Fragment fragment = manager.findFragmentById(R.id.eventlist_fragment_listview);
-        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
+        manager.beginTransaction().replace(R.id.content_home, new EventRecyclerViewFragment()).commit();
 /*        if (fragment == null) {
             fragment = new EventRecyclerViewFragment();
             manager.beginTransaction()
@@ -142,7 +117,10 @@ public class HomeScreenActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Firebase_Model.get().close();
+            Intent intent = new Intent(HomeScreenActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
