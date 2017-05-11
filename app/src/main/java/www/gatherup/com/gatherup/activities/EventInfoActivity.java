@@ -21,6 +21,7 @@ import www.gatherup.com.gatherup.MapsActivity;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event_Type;
+import www.gatherup.com.gatherup.data.User;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
@@ -80,7 +81,7 @@ public class EventInfoActivity extends AppCompatActivity {
         timetv.setText(mDetailedEvent.getStartTime());
                 /*mDetailedEvent.getStartDate().get(Calendar.HOUR) + ":" + mDetailedEvent.getStartDate().get(Calendar.MINUTE) +
                 " " + mDetailedEvent.getStartDate().getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault()) +
-                " to " + mDetailedEvent.getEndDate().get(Calendar.HOUR) + ":" + mDetailedEvent.getEndDate().get(Calendar.MINUTE) +
+                " to " + mDetailedEvent.getEndDate().get(Calendar.HOUR) + ":" + mDetailedEvent.geFtEndDate().get(Calendar.MINUTE) +
                 " " + mDetailedEvent.getEndDate().getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault()));*/
         addressTv.setText(mDetailedEvent.getAddress());
 
@@ -104,6 +105,7 @@ public class EventInfoActivity extends AppCompatActivity {
                 }*/
                 //TODO actually report mDetailedEvent
                 rsvpTv.setText(mDetailedEvent.getAttendeesList().size()+1 + " people are going");
+                Firebase_Model.get().userRSVP(mDetailedEvent.getEventID());
             }
         });
 
@@ -119,7 +121,7 @@ public class EventInfoActivity extends AppCompatActivity {
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Firebase_Model.get().sendReport(mDetailedEvent.getEventID());
                 //TODO implement report to the database
                 reportButton.setEnabled(false);
                 Toast.makeText(getApplicationContext(), "DetailedEvent successfully reported", Toast.LENGTH_SHORT).show();

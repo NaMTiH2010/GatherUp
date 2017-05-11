@@ -18,7 +18,7 @@ public class User {//implements Parcelable {
     private String mFullName;
     private String mEmail;
     private boolean mHasPicture;
-    private boolean mHasProfile;
+    private boolean mHasProfile = false;
 /*    private HashMap<String,Boolean> mEvents;
     private HashMap<String,Boolean> mFollowing;*/
     //private String passwordHash;
@@ -80,7 +80,7 @@ public class User {//implements Parcelable {
         mUserID = userID;
     }
 
-    public boolean isHasPicture() {
+    public boolean hasPicture() {
         return mHasPicture;
     }
 
@@ -88,7 +88,7 @@ public class User {//implements Parcelable {
         mHasPicture = hasPicture;
     }
 
-    public boolean isHasProfile() {
+    public boolean hasProfile() {
         return mHasProfile;
     }
 

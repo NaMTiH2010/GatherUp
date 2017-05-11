@@ -34,6 +34,7 @@ import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.activities.EventInfoActivity;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.Event_Type;
+import www.gatherup.com.gatherup.data.JsonTask;
 import www.gatherup.com.gatherup.data.WeakOnListChangedCallback;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
@@ -73,6 +74,7 @@ public class EventRecyclerViewFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         mEventRecyclerView = (RecyclerView) view
@@ -91,6 +93,7 @@ public class EventRecyclerViewFragment  extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         updateUI();
     }
 

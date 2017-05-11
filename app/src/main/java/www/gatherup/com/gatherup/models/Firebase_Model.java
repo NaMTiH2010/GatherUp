@@ -43,6 +43,9 @@ public class Firebase_Model {
     private DatabaseReference mDatabase;
     private DatabaseReference mPostReference;
 
+    public void sendReport(String key) {
+        mDatabase.child("reports").child("event").child(key).child(mAuthUser.getUid()).setValue(true);
+    }
 
 
     private enum EnumUser{Add,Remove}
@@ -96,7 +99,7 @@ public class Firebase_Model {
                 //FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (mAuth.getCurrentUser() != null){
                     mAuthUser = mAuth.getCurrentUser();
-                    setMainUser();
+
                     //Firebase_Model.get().getRegFake();
                     setRegisteredEventListener();
                     Log.d(TAG, "Signed in HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + mAuthUser.getUid());
@@ -267,10 +270,21 @@ public class Firebase_Model {
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).child(key).setValue(true);
 
     }
+    public void getAmtGoingForEvent(String key){
+        mDatabase.child("rsvp").child("event_users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserModel.get().setEventsPersonCount(dataSnapshot.getKey(),(int)dataSnapshot.getChildrenCount());
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public void findEventByID(String key){
        // mPostReference = FirebaseDatabase.getInstance().getReference()
-        ;
         mDatabase.child("events").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -284,6 +298,10 @@ public class Firebase_Model {
             }
         });
         //mPostReference.removeEventListener();
+    }
+    public void userRSVP(String key){
+        mDatabase.child("rsvp").child("event_users").child(key).child(mAuthUser.getUid()).setValue(true);
+        mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).child(key).setValue(true);
     }
     public void findUserForFriendsByID(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.databinding.ObservableArrayList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import www.gatherup.com.gatherup.data.DetailedEvent;
@@ -18,6 +20,8 @@ import www.gatherup.com.gatherup.data.User;
 public class UserModel {
 
     //private ArrayList<Event> mRegisteredEvents = new ArrayList<>();
+    /*private HashSet<String>*/
+    private HashMap<String,String> noDuplicatesHash = new HashMap<>();
     private ObservableArrayList<Event> mEvents = new ObservableArrayList<>();
     private ObservableArrayList<Event> mRegisteredEvents = new ObservableArrayList<>();
     private ObservableArrayList<User> mFriends = new ObservableArrayList<>();
@@ -32,6 +36,8 @@ public class UserModel {
     private String mFullname;
     //private String mPhoneNum;
     private static UserModel sUserModel;
+    private boolean mLoading;
+    private User mMainUser;
 
     private UserModel(Context context){
         this.mContext = context;
@@ -75,11 +81,25 @@ public class UserModel {
         mEvents.clear();
         mFriends.clear();
         mRegisteredEvents.clear();
+        noDuplicatesHash.clear();
+    }
+    public User getMainUser(){
+        return mMainUser;
     }
     public void refreshAllEvents(){
+        for(Event e : mEvents){
+            if(noDuplicatesHash.containsKey(e.getId())) {
+                noDuplicatesHash.remove(e.getId());
+            }
+        }
         mEvents.clear();
     }
     public void refreshAllRegisteredEvents(){
+        for(Event e : mRegisteredEvents){
+            if(noDuplicatesHash.containsKey(e.getId())) {
+                noDuplicatesHash.remove(e.getId());
+            }
+        }
         mRegisteredEvents.clear();
     }
 
@@ -95,7 +115,18 @@ public class UserModel {
     }
 
     public void addRegisteredEvent(Event aEvent) {
-        mRegisteredEvents.add(aEvent);
+        if(!noDuplicatesHash.containsKey(aEvent.getId())&& aEvent.getAmountOfPeople() < aEvent.getMaxCapacity()) {
+                mRegisteredEvents.add(aEvent);
+                 noDuplicatesHash.put(aEvent.getId(),"R");
+       }
+        else {
+            if(!noDuplicatesHash.get(aEvent.getId()).equals("R")&& aEvent.getAmountOfPeople() < aEvent.getMaxCapacity()) {
+                mRegisteredEvents.add(aEvent);
+                noDuplicatesHash.put(aEvent.getId(),"R");
+                removeAllEvent(aEvent.getId());
+            }
+        }
+        Firebase_Model.get().getAmtGoingForEvent(aEvent.getId());
     }
 
     public ObservableArrayList<Event>  getEvents() {
@@ -103,7 +134,11 @@ public class UserModel {
     }
 
     public void addEvent(Event aEvent) {
-        mEvents.add(aEvent);
+        if(!noDuplicatesHash.containsKey(aEvent.getId()) && aEvent.getAmountOfPeople() < aEvent.getMaxCapacity()) {
+            mEvents.add(aEvent);
+            Firebase_Model.get().getAmtGoingForEvent(aEvent.getId());
+            noDuplicatesHash.put(aEvent.getId(),"A");
+        }
     }
 
     public ObservableArrayList<User> getFriends() {
@@ -130,6 +165,7 @@ public class UserModel {
         this.mAccountName = user.getUsername();
         this.mEmail = user.getEmail();
         this.mFullname = user.getFullName();
+        this.mMainUser = user;
        /* for (String key: user.getEvents().keySet()) {
             Firebase_Model.get().findEventByID(key);
         }
@@ -177,5 +213,39 @@ public class UserModel {
         double dist = earthRadius * c;
 
         return dist;
+    }
+    private void removeAllEvent(String id){
+        for(Event e : mEvents){
+            if(e.getId().equals(id)){
+                mEvents.remove(e);
+                break;
+            }
+        }
+    }
+
+    public void setLoading(boolean loading) {
+        mLoading = loading;
+    }
+    public boolean getLoading(){
+        return mLoading;
+    }
+
+    public void setEventsPersonCount(String key, int childrenCount) {
+        if(noDuplicatesHash.containsKey(key)){
+            if(noDuplicatesHash.get(key).equals("R")){
+                for(Event e : mRegisteredEvents){
+                    if(e.getId().equals(key)){
+                        e.setAmountOfPeople(childrenCount);
+                    }
+                }
+            }
+            else{
+                for(Event e : mEvents){
+                    if(e.getId().equals(key)){
+                        e.setAmountOfPeople(childrenCount);
+                    }
+                }
+            }
+        }
     }
 }

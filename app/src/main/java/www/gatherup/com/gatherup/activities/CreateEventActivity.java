@@ -66,7 +66,9 @@ public class CreateEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+/*
         uploadIMG_BTN = (Button)findViewById(R.id.upload_BTN);
+*/
         setIMG_BTN = (Button)findViewById(R.id.setIMG_BTN);
         createButton = (Button)findViewById(R.id.createEvent_BTN);
         event_Img = (ImageView)findViewById(R.id.imageView2);
@@ -119,13 +121,13 @@ public class CreateEventActivity extends AppCompatActivity {
                 /*fm.beginTransaction().replace(R.id.images_fragment_container, new Default_Images_Fragment()).commit();*/
             }
         });
-        uploadIMG_BTN.setOnClickListener(new View.OnClickListener() {
+        /*uploadIMG_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.images_fragment_container, new Default_Images_Fragment()).commit();*/
+                *//*FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.images_fragment_container, new Default_Images_Fragment()).commit();*//*
             }
-        });
+        });*/
         date_ET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override

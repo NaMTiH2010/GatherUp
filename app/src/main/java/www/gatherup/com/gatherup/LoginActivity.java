@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import www.gatherup.com.gatherup.activities.CreateAccountActivity;
+import www.gatherup.com.gatherup.activities.CreateProfileActivity;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.JsonTask;
 import www.gatherup.com.gatherup.data.User;
@@ -105,14 +106,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
+
         // TODO: add the AuthListener
         Firebase_Model.get().addAuthListener();
-        if(Firebase_Model.get().isUserConnected()){
+        if(Firebase_Model.get().isUserConnected()) {
             //Firebase_Model.get().
-            Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
-            startActivity(intent);
-            Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();
-            finish();
+            Firebase_Model.get().setMainUser();
+                Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
+                Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();
+                finish();
+
         }
     }
 
@@ -188,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //Firebase_Model.get().setMainUser();
                             //Firebase_Model.get().getRegFake();
                             //Firebase_Model.get().setRegisteredEventListener();
+                            Firebase_Model.get().setMainUser();
                             Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             startActivity(intent);
                             Toast.makeText(LoginActivity.this, "Signed in", Toast.LENGTH_SHORT).show();

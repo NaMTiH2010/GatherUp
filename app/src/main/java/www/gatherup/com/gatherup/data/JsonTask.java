@@ -33,6 +33,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... params) {
+
         HttpURLConnection connection=null;
         BufferedReader reader=null;
 
@@ -93,6 +94,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
         // Put the API events on the Usermodel events
         UserModel.get().getEvents().addAll(getEventsFromJSON(result));
         Collections.sort(UserModel.get().getEvents());
+        UserModel.get().setLoading(false);
 
     }
 
@@ -112,7 +114,7 @@ public class JsonTask extends AsyncTask<String,String,String> {
 
                 // Mandatory
                 if (jsonEvent.has("name")){
-                    currentEvent.setTitle("(M)" + jsonEvent.getString("name"));
+                    currentEvent.setTitle("" + jsonEvent.getString("name"));
                 }else continue;
 
                 // Optional

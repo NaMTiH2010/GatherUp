@@ -123,11 +123,11 @@ public class DetailedEvent{
     }*/
     public void addAttendee(User user){
         attendeesList.add(user);
-        activity.rsvpTv.setText(""+attendeesList.size());
+        activity.rsvpTv.setText(""+attendeesList.size()+" people are going");
     }
     public void removeAttendee(User user){
         attendeesList.remove(user);
-        activity.rsvpTv.setText(""+attendeesList.size());
+        activity.rsvpTv.setText(""+attendeesList.size()+" people are going");
     }
 
     public Calendar getStartDate() {
