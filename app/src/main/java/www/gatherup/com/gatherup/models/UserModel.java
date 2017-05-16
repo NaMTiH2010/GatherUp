@@ -116,13 +116,17 @@ public class UserModel {
 
     public void addRegisteredEvent(Event aEvent) {
         if(!noDuplicatesHash.containsKey(aEvent.getId())&& aEvent.getAmountOfPeople() < aEvent.getMaxCapacity()) {
+            if(!aEvent.getCreator().equalsIgnoreCase("http")) {
                 mRegisteredEvents.add(aEvent);
-                 noDuplicatesHash.put(aEvent.getId(),"R");
+                noDuplicatesHash.put(aEvent.getId(), "R");
+            }
        }
         else {
             if(!noDuplicatesHash.get(aEvent.getId()).equals("R")&& aEvent.getAmountOfPeople() < aEvent.getMaxCapacity()) {
                 mRegisteredEvents.add(aEvent);
-                noDuplicatesHash.put(aEvent.getId(),"R");
+                if(!aEvent.getCreator().equalsIgnoreCase("http")) {
+                    noDuplicatesHash.put(aEvent.getId(), "R");
+                }
                 removeAllEvent(aEvent.getId());
             }
         }

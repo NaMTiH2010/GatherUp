@@ -22,7 +22,7 @@ public class Event implements Comparable<Event>{
     private String mState;
     private String mZipcode;
     private String mDescription;
-    private String mId;
+    private String mId = "";
     private int mAmountOfPeople;
    // private HashMap<String,Boolean> mRegisteredUsers;
 
@@ -208,7 +208,10 @@ public class Event implements Comparable<Event>{
     }*/
 
     public String getId() {
-        return mId;
+        if(mId!=null) {
+            return mId;
+        }
+        return "";
     }
 
     public void setId(String id) {
