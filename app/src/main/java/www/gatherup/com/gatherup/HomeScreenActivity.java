@@ -53,12 +53,7 @@ public class HomeScreenActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_screen);
         /*Firebase_Model.get().setAllEventListener();*/
         Firebase_Model.get().setFriendsListener();
-        if(UserModel.get().getMainUser().hasProfile()) {
-            Intent intent = new Intent(HomeScreenActivity.this, CreateProfileActivity.class);
-            startActivity(intent);
-            Toast.makeText(HomeScreenActivity.this, "Create Your Profile", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,6 +115,7 @@ public class HomeScreenActivity extends AppCompatActivity
         /*EventListFragment allEventsListFragment = EventListFragment.newInstance();
         FragmentManager manager= getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();*/
+
     }
 
     @Override
@@ -128,13 +124,19 @@ public class HomeScreenActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Firebase_Model.get().close();
+            /*Firebase_Model.get().close();
             Intent intent = new Intent(HomeScreenActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
+            finish();*/
+            super.onBackPressed();
         }
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

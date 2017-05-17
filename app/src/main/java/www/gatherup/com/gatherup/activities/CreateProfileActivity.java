@@ -70,15 +70,14 @@ public class CreateProfileActivity extends AppCompatActivity {
                         int age = Integer.parseInt(create_prof_age_edit.getText().toString());
                         Firebase_Model.get().setProfile(new Profile(age, gender_Spin.getSelectedItem().toString(), create_prof_job_edit.getText().toString(), create_prof_birth_edit.getText().toString(), create_prof_about_edit.getText().toString(), 0));
 
-                        Toast.makeText(CreateProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(CreateProfileActivity.this, HomeScreenActivity.class);
-                        startActivity(intent);
-                        finish();
+                        /**/
                     }
-                    else{
-                        Intent intent = new Intent(CreateProfileActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                    }
+
+                    Firebase_Model.get().setHasProfileToTrue();
+                    Toast.makeText(CreateProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateProfileActivity.this, HomeScreenActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

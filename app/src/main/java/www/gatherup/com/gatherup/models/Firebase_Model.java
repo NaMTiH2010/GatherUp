@@ -57,6 +57,11 @@ public class Firebase_Model {
         mDatabase.child("profiles").child(mAuthUser.getUid()).setValue(profile);
     }
 
+    public void setHasProfileToTrue() {
+        mDatabase.child("profiles").child(mAuthUser.getUid()).child("hasProfile").setValue(true);
+        mDatabase.child("users").child(mAuthUser.getUid()).child("userID").setValue(mAuthUser.getUid());
+    }
+
 
     private enum EnumUser{Add,Remove}
     private FirebaseStorage storage = FirebaseStorage.getInstance();
