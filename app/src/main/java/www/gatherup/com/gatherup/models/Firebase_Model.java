@@ -47,6 +47,10 @@ public class Firebase_Model {
         mDatabase.child("reports").child("event").child(key).child(mAuthUser.getUid()).setValue(true);
     }
 
+    public void sendRating(float rating,Event e) {
+        mDatabase.child("rating").child(e.getCreator()).child(mAuthUser.getUid()+"_"+e.getId()).setValue(rating);
+    }
+
 
     private enum EnumUser{Add,Remove}
     private FirebaseStorage storage = FirebaseStorage.getInstance();

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class EventInfoActivity extends AppCompatActivity {
         final Button rsvpBtn = (Button)findViewById(R.id.event_info_rsvp);
         Button mapBtn = (Button)findViewById(R.id.event_info_open_map_btn);
         Button editBtn = (Button)findViewById(R.id.event_info_edit_btn);
+        RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         final Button reportButton = (Button)findViewById(R.id.event_info_report);
 
         if(mDetailedEvent.getInnerEvent().getId().equals("http")){
@@ -89,7 +91,13 @@ public class EventInfoActivity extends AppCompatActivity {
         rsvpTv.setText(mDetailedEvent.getAttendeesList().size() + " people are going");
 
         description.setText(mDetailedEvent.getDescription());
-
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingBar.setIsIndicator(true);
+                Firebase_Model.get().sendRating(rating,mDetailedEvent.getInnerEvent());
+            }
+        });
         rsvpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
