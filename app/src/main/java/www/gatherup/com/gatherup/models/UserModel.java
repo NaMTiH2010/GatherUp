@@ -3,6 +3,8 @@ package www.gatherup.com.gatherup.models;
 import android.content.Context;
 import android.databinding.ObservableArrayList;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ public class UserModel {
     private ObservableArrayList<User> mFriends = new ObservableArrayList<>();
     private ObservableArrayList<Event> mFilteredEvents = new ObservableArrayList<>();
     //private ArrayList<User> mFriends = new ArrayList<>();
+
     private DetailedEvent mCurrentDetailedEvent;
     private DetailedUser mCurrentDetailedUser;
     private String mAccountName;

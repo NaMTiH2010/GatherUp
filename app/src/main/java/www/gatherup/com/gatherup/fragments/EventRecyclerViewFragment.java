@@ -14,14 +14,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import www.gatherup.com.gatherup.GlobalAppState;
+import www.gatherup.com.gatherup.HomeScreenActivity;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.activities.EventInfoActivity;
 import www.gatherup.com.gatherup.data.Event;
@@ -46,9 +53,13 @@ import www.gatherup.com.gatherup.models.UserModel;
 public class EventRecyclerViewFragment  extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
-
+    private ObservableArrayList<Event> events;
+    private ChildEventListener mAllEventListener;
+    private final String TAG = "EVENT_RECYCLER_ADAPTER";
+    private ChildEventListener mRegisteredEventListener;
     private RecyclerView mEventRecyclerView;
     private EventAdapter mAdapter;
+    private FirebaseRecyclerAdapter mFirebaseRecyclerAdapter;
     private boolean mSubtitleVisible;
     //private Callbacks mCallbacks;
 
@@ -69,6 +80,7 @@ public class EventRecyclerViewFragment  extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -84,6 +96,23 @@ public class EventRecyclerViewFragment  extends Fragment {
         if (savedInstanceState != null) {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
+        mAllEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                Event ev = dataSnapshot.getValue(Event.class);
+                UserModel.get().addEvent(ev);
+                updateUI();
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
 
         updateUI();
 
@@ -93,8 +122,20 @@ public class EventRecyclerViewFragment  extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+            //Firebase_Model.get().setRegisteredEventListener(mRegisteredEventListener);
+            Firebase_Model.get().setAllEventListener(mAllEventListener);
+            new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
+
+
 
         updateUI();
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+            Firebase_Model.get().removeAllEventListener(mAllEventListener);
+            //Firebase_Model.get().removeRegisteredEventListener(mRegisteredEventListener);
     }
 
     @Override
@@ -109,15 +150,24 @@ public class EventRecyclerViewFragment  extends Fragment {
         //mCallbacks = null;
     }
     public void updateUI() {
-        UserModel userModel = UserModel.get(getActivity());
-        ObservableArrayList<Event> events = userModel.getFilteredEvents();
+        //UserModel userModel = UserModel.get(getActivity());
+        //= userModel.getFilteredEvents();
 
-        if (mAdapter == null) {
-            mAdapter = new EventAdapter(events);
+        if (mFirebaseRecyclerAdapter == null) {
+
+            //events = new ObservableArrayList<Event>();
+            if (getActivity() instanceof HomeScreenActivity) {
+                mAdapter = new EventAdapter(UserModel.get().getEvents());
+            }
+            else{mAdapter = new EventAdapter(UserModel.get().getRegisteredDetailedEvents());}
+
             mEventRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.setEvents(events);
-            mAdapter.notifyDataSetChanged();
+            if (getActivity() instanceof HomeScreenActivity) {
+                mAdapter.setEvents(UserModel.get().getEvents());
+            }
+            else { mAdapter.setEvents(UserModel.get().getRegisteredDetailedEvents());}
+                    mAdapter.notifyDataSetChanged();
         }
 
         /*updateSubtitle();*/
@@ -298,7 +348,7 @@ public class EventRecyclerViewFragment  extends Fragment {
             Event event = mEvents.get(position);
             holder.bind(event);
         }
-
+        public void addEvent(Event e){if(mEvents != null){mEvents.add(e);}}
         @Override
         public int getItemCount() {
             return mEvents.size();

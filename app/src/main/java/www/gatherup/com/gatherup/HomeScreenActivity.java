@@ -1,13 +1,11 @@
 package www.gatherup.com.gatherup;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,42 +15,41 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import www.gatherup.com.gatherup.activities.CreateEventActivity;
-import www.gatherup.com.gatherup.activities.CreateProfileActivity;
 import www.gatherup.com.gatherup.activities.MyEventsActivity;
 import www.gatherup.com.gatherup.activities.SearchEventActivity;
 import www.gatherup.com.gatherup.activities.UserProfileActivity;
-import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event;
+import www.gatherup.com.gatherup.data.JsonTask;
+import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
+import www.gatherup.com.gatherup.models.Firebase_Model;
+import www.gatherup.com.gatherup.models.UserModel;
+
 /*
 import www.gatherup.com.gatherup.fragments.EventListFragment;
 */
-import www.gatherup.com.gatherup.data.JsonTask;
-import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
-import www.gatherup.com.gatherup.fragments.MySpinnerDialog;
-import www.gatherup.com.gatherup.models.Firebase_Model;
-import www.gatherup.com.gatherup.models.UserModel;
 
 public class HomeScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{//, EventListFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "NewPostActivity";
-
+    private GoogleApiClient mClient;
 
     ArrayList<Event> mEventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new JsonTask().execute("https://api.meetup.com/2/open_events?zip=11735&radius=3&key=2d374e6c29622464852186f769345e");
+
         setContentView(R.layout.activity_home_screen);
-        Firebase_Model.get().setAllEventListener();
+        /*Firebase_Model.get().setAllEventListener();*/
         Firebase_Model.get().setFriendsListener();
 /*        if(UserModel.get().getMainUser().hasProfile()) {
             Intent intent = new Intent(HomeScreenActivity.this, CreateProfileActivity.class);
@@ -210,6 +207,6 @@ public class HomeScreenActivity extends AppCompatActivity
     @Override
     protected void onDestroy(){
         super.onDestroy();
-       Firebase_Model.get().removeRegisteredEventListener();
+       /*Firebase_Model.get().removeRegisteredEventListener();*/
     }
 }

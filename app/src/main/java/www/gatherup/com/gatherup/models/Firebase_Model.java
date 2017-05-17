@@ -59,7 +59,7 @@ public class Firebase_Model {
     private EnumUser mEnum_user = EnumUser.Add;
     private FirebaseAuth mAuth;
     private ChildEventListener mEventAttendeesCountListener;
-    private ChildEventListener mAllEventListener;
+    /*private ChildEventListener mAllEventListener;*/
     private ChildEventListener mRegisteredEventListener;
     private ChildEventListener mFriendsListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -80,7 +80,7 @@ public class Firebase_Model {
         mAuth = FirebaseAuth.getInstance();
         mAuthUser = mAuth.getCurrentUser();
 
-        mAllEventListener = new ChildEventListener() {
+        /*mAllEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
@@ -95,7 +95,7 @@ public class Firebase_Model {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {}
-        };
+        };*/
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -105,10 +105,10 @@ public class Firebase_Model {
                     mAuthUser = mAuth.getCurrentUser();
 
                     //Firebase_Model.get().getRegFake();
-                    setRegisteredEventListener();
+                    //setRegisteredEventListener();
                     Log.d(TAG, "Signed in HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH: " + mAuthUser.getUid());
                 } else if(mAuth.getCurrentUser() == null) {
-                    removeAllEventListener();
+                    //removeAllEventListener();
                     UserModel.get().refresh();
                     Log.d(TAG, "Currently signed out HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
                 }
@@ -182,6 +182,10 @@ public class Firebase_Model {
         }
     }
 
+    public DatabaseReference getRef(){
+        return mDatabase;
+    }
+
     public boolean isUserConnected(){
 /*        if(mAuthUser == null)
             mAuthUser = mAuth.getCurrentUser();*/
@@ -246,14 +250,14 @@ public class Firebase_Model {
         UserModel.get().refreshAllRegisteredEvents();
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).addChildEventListener(mRegisteredEventListener);
     }
-    public void removeRegisteredEventListener(){
+    public void removeRegisteredEventListener(ChildEventListener mRegisteredEventListener){
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).removeEventListener(mRegisteredEventListener);
     }
-    public void setAllEventListener() {
+    public void setAllEventListener(ChildEventListener mAllEventListener) {
         UserModel.get().refreshAllEvents();
         mDatabase.child("events").addChildEventListener(mAllEventListener);
     }
-    public void removeAllEventListener(){
+    public void removeAllEventListener(ChildEventListener mAllEventListener){
         mDatabase.child("events").removeEventListener(mAllEventListener);
     }
     public void setEventAttendeesCountListener(String eventKey){

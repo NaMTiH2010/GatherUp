@@ -25,7 +25,6 @@ public class AddressGenerator {
         sAddresses = null;
         try {
             sAddresses = sGeocoder.getFromLocation(latitude, longitude, 1);
-
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(sAddresses.get(0).getAddressLine(0) != null? sAddresses.get(0).getAddressLine(0): "");
             stringBuilder.append(sAddresses.get(0).getLocality() != null? ", " + sAddresses.get(0).getLocality() : "");
@@ -42,6 +41,18 @@ public class AddressGenerator {
         }
 
         return s;
+    }
+    public static String getZipcode(Context context,double latitude,double longitude){
+        sGeocoder = new Geocoder(context);
+        sAddresses = null;
+        try {
+            sAddresses = sGeocoder.getFromLocation(latitude, longitude, 1);
+            return sAddresses.get(0).getPostalCode();
+        } catch (IOException e) {
+            // TODO Properly handle this exception
+            e.printStackTrace();
+        }
+        return null;
     }
     public static Location getCoords(Context context, String address){
         sGeocoder = new Geocoder(context);
