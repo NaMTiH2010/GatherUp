@@ -104,16 +104,16 @@ public class EventInfoActivity extends AppCompatActivity {
                 if (mDetailedEvent.getOwner().getEmail().startsWith("http")){
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mDetailedEvent.getOwner().getEmail()));
                     startActivity(intent);
-                }/*else{
+                }else{
                     Toast.makeText(getApplicationContext(),"You succesfully registered", Toast.LENGTH_SHORT).show();
                     rsvpBtn.setEnabled(false);
-
+                    Firebase_Model.get().userRSVP(mDetailedEvent.getEventID());
                     //TODO actually report mDetailedEvent
-                    rsvpTv.setText(mDetailedEvent.getAtendeesList().size()+1 + " people are going");
-                }*/
+                    //rsvpTv.setText(mDetailedEvent.getAtendeesList().size()+1 + " people are going");
+                }
                 //TODO actually report mDetailedEvent
                 rsvpTv.setText(mDetailedEvent.getAttendeesList().size()+1 + " people are going");
-                Firebase_Model.get().userRSVP(mDetailedEvent.getEventID());
+
             }
         });
 
