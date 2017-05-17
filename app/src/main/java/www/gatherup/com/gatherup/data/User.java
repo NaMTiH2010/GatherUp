@@ -92,6 +92,14 @@ public class User {//implements Parcelable {
         return mHasProfile;
     }
 
+    public boolean isHasPicture() {
+        return mHasPicture;
+    }
+
+    public boolean isHasProfile() {
+        return mHasProfile;
+    }
+
     public void setHasProfile(boolean hasProfile) {
         mHasProfile = hasProfile;
     }

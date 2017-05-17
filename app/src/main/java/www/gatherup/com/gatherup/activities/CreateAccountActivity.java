@@ -90,7 +90,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     //accountCreated = true;
                                     Firebase_Model.get().addUserToDataBase(new User(mUserName,mFullName,mEmail,false,false),password);
                                     Toast.makeText(CreateAccountActivity.this,"User succesfully created", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+
+                                    Intent intent = new Intent(CreateAccountActivity.this, CreateProfileActivity.class);
                                     startActivity(intent);
                                     finish();
 

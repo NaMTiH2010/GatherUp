@@ -158,7 +158,6 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 eventCategory = (String)adapterView.getItemAtPosition(i);
                 //Toast.makeText(getApplicationContext(), categoryFilter + " selected", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override

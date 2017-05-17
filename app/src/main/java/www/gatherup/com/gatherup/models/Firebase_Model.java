@@ -30,8 +30,10 @@ import java.util.ArrayList;
 import www.gatherup.com.gatherup.HomeScreenActivity;
 import www.gatherup.com.gatherup.LoginActivity;
 import www.gatherup.com.gatherup.data.DetailedEvent;
+import www.gatherup.com.gatherup.data.DetailedUser;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.JsonTask;
+import www.gatherup.com.gatherup.data.Profile;
 import www.gatherup.com.gatherup.data.User;
 
 /**
@@ -49,6 +51,10 @@ public class Firebase_Model {
 
     public void sendRating(float rating,Event e) {
         mDatabase.child("rating").child(e.getCreator()).child(mAuthUser.getUid()+"_"+e.getId()).setValue(rating);
+    }
+
+    public void setProfile(Profile profile) {
+        mDatabase.child("profiles").child(mAuthUser.getUid()).setValue(profile);
     }
 
 
@@ -319,6 +325,23 @@ public class Firebase_Model {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 UserModel.get().addFriends(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void findUserForDetailedUser(User user){
+        //mPostReference = FirebaseDatabase.getInstance().getReference()
+        UserModel.get().getCurrentDetailedUser().setUser(user);
+        mDatabase.child("profiles").child(user.getUserID()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Found Profile For "+dataSnapshot.getKey());
+                Profile profile = dataSnapshot.getValue(Profile.class);
+                UserModel.get().getCurrentDetailedUser().setProfile(profile);
             }
 
             @Override

@@ -31,7 +31,7 @@ public class UserModel {
     //private ArrayList<User> mFriends = new ArrayList<>();
 
     private DetailedEvent mCurrentDetailedEvent;
-    private DetailedUser mCurrentDetailedUser;
+    private DetailedUser mCurrentDetailedUser = new DetailedUser();
     private String mAccountName;
     private Context mContext;
     //private String mAlias;
@@ -190,6 +190,7 @@ public class UserModel {
     }
 
     public DetailedUser getCurrentDetailedUser() {
+
         return mCurrentDetailedUser;
     }
 

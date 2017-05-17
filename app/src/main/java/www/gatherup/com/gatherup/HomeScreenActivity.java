@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import www.gatherup.com.gatherup.activities.CreateEventActivity;
+import www.gatherup.com.gatherup.activities.CreateProfileActivity;
 import www.gatherup.com.gatherup.activities.MyEventsActivity;
 import www.gatherup.com.gatherup.activities.SearchEventActivity;
 import www.gatherup.com.gatherup.activities.UserProfileActivity;
@@ -51,12 +53,12 @@ public class HomeScreenActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_screen);
         /*Firebase_Model.get().setAllEventListener();*/
         Firebase_Model.get().setFriendsListener();
-/*        if(UserModel.get().getMainUser().hasProfile()) {
+        if(UserModel.get().getMainUser().hasProfile()) {
             Intent intent = new Intent(HomeScreenActivity.this, CreateProfileActivity.class);
             startActivity(intent);
             Toast.makeText(HomeScreenActivity.this, "Create Your Profile", Toast.LENGTH_SHORT).show();
             finish();
-        }*/
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -164,6 +166,7 @@ public class HomeScreenActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             menuclass = UserProfileActivity.class;
+            Firebase_Model.get().findUserForDetailedUser(UserModel.get().getMainUser());
         } else if (id == R.id.nav_create_events) {
             menuclass = CreateEventActivity.class;
         } else if (id == R.id.nav_search_events) {
