@@ -109,6 +109,7 @@ public class EventInfoActivity extends AppCompatActivity {
         userList_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserModel.get().setDisplayFriends(false);
                 Intent intent = new Intent(EventInfoActivity.this, UserListActivity.class);
                 startActivity(intent);
             }

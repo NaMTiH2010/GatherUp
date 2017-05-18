@@ -25,8 +25,10 @@ import java.util.Collections;
 
 import www.gatherup.com.gatherup.activities.CreateEventActivity;
 import www.gatherup.com.gatherup.activities.CreateProfileActivity;
+import www.gatherup.com.gatherup.activities.EventInfoActivity;
 import www.gatherup.com.gatherup.activities.MyEventsActivity;
 import www.gatherup.com.gatherup.activities.SearchEventActivity;
+import www.gatherup.com.gatherup.activities.UserListActivity;
 import www.gatherup.com.gatherup.activities.UserProfileActivity;
 import www.gatherup.com.gatherup.data.Event;
 import www.gatherup.com.gatherup.data.JsonTask;
@@ -52,7 +54,7 @@ public class HomeScreenActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_home_screen);
         /*Firebase_Model.get().setAllEventListener();*/
-        Firebase_Model.get().setFriendsListener();
+        //Firebase_Model.get().setFriendsListener();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -154,16 +156,17 @@ public class HomeScreenActivity extends AppCompatActivity
             menuclass = MyEventsActivity.class;
         } else if (id == R.id.nav_sign_out) {
             menuclass = LoginActivity.class;
+        } else if (id == R.id.nav_friends) {
+            menuclass = UserListActivity.class;
+            UserModel.get().setDisplayFriends(true);
         }
 
         if(menuclass == LoginActivity.class){
             Firebase_Model.get().close();
             //Firebase_Model.get().getAuth().signOut();
-
             Intent intent = new Intent(HomeScreenActivity.this, menuclass);
             startActivity(intent);
             finish();
-
         }
         else if (menuclass != null) {
             Intent intent = new Intent(HomeScreenActivity.this, menuclass);

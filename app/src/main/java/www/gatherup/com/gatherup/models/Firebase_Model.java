@@ -52,7 +52,12 @@ public class Firebase_Model {
     public void sendRating(float rating,Event e) {
         mDatabase.child("rating").child(e.getCreator()).child(mAuthUser.getUid()+"_"+e.getId()).setValue(rating);
     }
-
+    public void setRatingListener(ChildEventListener listener){
+        mDatabase.child("rating").child(UserModel.get().getCurrentDetailedUser().getUser().getUserID()).addChildEventListener(listener);
+    }
+    public void removeRatingListener(ChildEventListener listener){
+        mDatabase.child("rating").child(UserModel.get().getCurrentDetailedUser().getUser().getUserID()).removeEventListener(listener);
+    }
     public void setProfile(Profile profile) {
         mDatabase.child("profiles").child(mAuthUser.getUid()).setValue(profile);
     }
@@ -250,12 +255,19 @@ public class Firebase_Model {
         mAuth.signOut();
     }
 
-    public void setFriendsListener() {
+/*    public void setFriendsListener() {
         UserModel.get().refreshFriends();
         mDatabase.child("following").child(mAuthUser.getUid()).addChildEventListener(mFriendsListener);
     }
     public void removeFriendsListener(){
         mDatabase.child("following").child(mAuthUser.getUid()).removeEventListener(mFriendsListener);
+    }*/
+    public void setFriendsListener(ChildEventListener listener) {
+        UserModel.get().refreshFriends();
+        mDatabase.child("following").child(mAuthUser.getUid()).addChildEventListener(listener);
+    }
+    public void removeFriendsListener(ChildEventListener listener){
+        mDatabase.child("following").child(mAuthUser.getUid()).removeEventListener(listener);
     }
     public void setRegisteredEventListener() {
         UserModel.get().refreshAllRegisteredEvents();
@@ -277,11 +289,11 @@ public class Firebase_Model {
     public void removeEventAttendeesCountListener(String eventKey){
         mDatabase.child("rsvp").child("event_users").child(eventKey).removeEventListener(mEventAttendeesCountListener);
     }*/
-public void setEventAttendeesCountListener(ChildEventListener mEventAttendeesCountListener){
-    if(UserModel.get().getCurrentDetailedEvent() != null) {
-        String car =""+UserModel.get().getCurrentDetailedEvent().getEventID();
-        mDatabase.child("rsvp").child("event_users").child(UserModel.get().getCurrentDetailedEvent().getEventID()).addChildEventListener(mEventAttendeesCountListener);
-    }
+    public void setEventAttendeesCountListener(ChildEventListener mEventAttendeesCountListener){
+        if(UserModel.get().getCurrentDetailedEvent() != null) {
+            String car =""+UserModel.get().getCurrentDetailedEvent().getEventID();
+            mDatabase.child("rsvp").child("event_users").child(UserModel.get().getCurrentDetailedEvent().getEventID()).addChildEventListener(mEventAttendeesCountListener);
+        }
     }
     public void removeEventAttendeesCountListener(ChildEventListener mEventAttendeesCountListener){
         mDatabase.child("rsvp").child("event_users").child(UserModel.get().getCurrentDetailedEvent().getEventID()).removeEventListener(mEventAttendeesCountListener);

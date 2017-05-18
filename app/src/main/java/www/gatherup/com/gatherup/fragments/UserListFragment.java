@@ -33,6 +33,7 @@ public class UserListFragment extends Fragment {
     private RecyclerView mUserRecyclerView;
     private ChildEventListener mEventAttendeesCountListener;
     private final String TAG = "USER_RECYCLER_ADAPTER";    private int mColumnCount = 1;
+    private int ratingTotal = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,7 +60,12 @@ public class UserListFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
+    private void updateRatingTotal(double addition){
+        ratingTotal += addition;
+    }
+    private void updateRating(int amountOfRatings ){
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,15 +141,28 @@ public class UserListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ratingTotal = 0;
         updateUI();
-        Firebase_Model.get().setEventAttendeesCountListener(mEventAttendeesCountListener);
+        if(UserModel.get().isDisplayFriends()){
+            Firebase_Model.get().setFriendsListener(mEventAttendeesCountListener);
+        }
+        else{
+            Firebase_Model.get().setEventAttendeesCountListener(mEventAttendeesCountListener);
+        }
+
 
 
     }
     @Override
     public void onPause(){
         super.onPause();
-        Firebase_Model.get().removeEventAttendeesCountListener(mEventAttendeesCountListener);
+        if(UserModel.get().isDisplayFriends()){
+            Firebase_Model.get().removeFriendsListener(mEventAttendeesCountListener);
+        }
+        else{
+            Firebase_Model.get().removeEventAttendeesCountListener(mEventAttendeesCountListener);
+        }
+
     }
 
     @Override
@@ -180,19 +199,19 @@ public class UserListFragment extends Fragment {
 
         private User mUser;
 
-        private TextView rating_TV;
+        //private TextView rating_TV;
         private TextView content;
 
         public UserHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.fragment_user, parent, false));
             itemView.setOnClickListener(this);
-            rating_TV = (TextView)itemView.findViewById(R.id.rating_TV);
+            //rating_TV = (TextView)itemView.findViewById(R.id.rating_TV);
             content = (TextView)itemView.findViewById(R.id.content);
         }
 
         public void bind(User temp_user) {
             mUser = temp_user;
-            rating_TV.setText("Rating: 4/5");
+            //rating_TV.setText("Rating: 4/5");
             content.setText(mUser.getUsername());
         }
 

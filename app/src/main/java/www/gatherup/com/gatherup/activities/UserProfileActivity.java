@@ -3,13 +3,24 @@ package www.gatherup.com.gatherup.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.User;
+
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
@@ -21,12 +32,16 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView birthday_TV;
     private TextView gender_TV;
     private TextView job_TV;
+    private ArrayList<Double> ratings;
     //private TextView location_TV;
-
+    private final String TAG = "UserProfileActivity";
     private TextView username_TV;
     private TextView fullname_TV;
     private Button edit_BTN;
     private Button add_friend_BTN;
+    private RatingBar ratingBar2;
+    private int ratingTotal = 0;
+    private ChildEventListener ratingListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +67,42 @@ public class UserProfileActivity extends AppCompatActivity {
         add_friend_BTN = (Button)findViewById(R.id.add_friend_BTN);
         username_TV = (TextView)findViewById(R.id.username_TV);
         fullname_TV = (TextView)findViewById(R.id.fullname_TV);
+        ratingBar2 = (RatingBar)findViewById(R.id.ratingBar2);
+        username_TV.setText(UserModel.get().getCurrentDetailedUser().getUser().getUsername());
+        fullname_TV.setText(UserModel.get().getCurrentDetailedUser().getUser().getFullName());
+        ratings = new ArrayList<>();
+        ratingListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                double rating = dataSnapshot.getValue(double.class);
+                //long count = dataSnapshot.getChildrenCount();
+                Log.d(TAG, "Amount of Users Who Rated " + rating + ")");
+                updateRatingTotal(rating);
+            }
 
-        username_TV.setText(UserModel.get().getAccountName());
-        fullname_TV.setText(UserModel.get().getFullname());
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
         if(UserModel.get().getCurrentDetailedUser() != null){
             if(!UserModel.get().getMainUser().getUserID().equalsIgnoreCase(UserModel.get().getCurrentDetailedUser().getUser().getUserID())){
                 edit_BTN.setVisibility(View.INVISIBLE);
             }else{
+                add_friend_BTN.setVisibility(View.INVISIBLE);
+            }
+            if(UserModel.get().isDisplayFriends()){
                 add_friend_BTN.setVisibility(View.INVISIBLE);
             }
             if(UserModel.get().getCurrentDetailedUser().getProfile() != null){
@@ -102,5 +145,29 @@ public class UserProfileActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"You succesfully Added Friend", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        ratingTotal = 0;
+        ratings.clear();
+        Firebase_Model.get().setRatingListener(ratingListener);
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Firebase_Model.get().removeRatingListener(ratingListener);
+    }
+    private void updateRatingTotal(double addition){
+        ratings.add(addition);
+        ratingTotal += addition;
+        updateRating();
+    }
+    private void updateRating(){
+        if(ratings.size()>0) {
+            float rating = ratingTotal / ratings.size();
+            ratingBar2.setRating(rating);
+        }
     }
 }

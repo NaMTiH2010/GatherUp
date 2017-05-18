@@ -20,7 +20,7 @@ import www.gatherup.com.gatherup.data.User;
  */
 
 public class UserModel {
-
+    private boolean displayFriends = true;
     //private ArrayList<Event> mRegisteredEvents = new ArrayList<>();
     /*private HashSet<String>*/
     private HashMap<String,String> noDuplicatesHash = new HashMap<>();
@@ -262,5 +262,13 @@ public class UserModel {
     }
     public Event getCurrentEvent() {
         return mCurrentEvent;
+    }
+
+    public boolean isDisplayFriends() {
+        return displayFriends;
+    }
+
+    public void setDisplayFriends(boolean displayFriends) {
+        this.displayFriends = displayFriends;
     }
 }
