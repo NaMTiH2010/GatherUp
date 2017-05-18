@@ -58,7 +58,7 @@ public class Firebase_Model {
     }
 
     public void setHasProfileToTrue() {
-        mDatabase.child("profiles").child(mAuthUser.getUid()).child("hasProfile").setValue(true);
+        mDatabase.child("users").child(mAuthUser.getUid()).child("hasProfile").setValue(true);
         mDatabase.child("users").child(mAuthUser.getUid()).child("userID").setValue(mAuthUser.getUid());
     }
 
@@ -85,7 +85,7 @@ public class Firebase_Model {
             return sFirebase_model;
     }
     private Firebase_Model() {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance();
@@ -125,7 +125,7 @@ public class Firebase_Model {
                 }
             }
         };
-        mEventAttendeesCountListener = new ChildEventListener() {
+/*        mEventAttendeesCountListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String key = dataSnapshot.getKey();
@@ -143,7 +143,7 @@ public class Firebase_Model {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {}
-        };
+        };*/
 
         mRegisteredEventListener = new ChildEventListener() {
             @Override
@@ -271,11 +271,20 @@ public class Firebase_Model {
     public void removeAllEventListener(ChildEventListener mAllEventListener){
         mDatabase.child("events").removeEventListener(mAllEventListener);
     }
-    public void setEventAttendeesCountListener(String eventKey){
+/*    public void setEventAttendeesCountListener(String eventKey){
         mDatabase.child("rsvp").child("event_users").child(eventKey).addChildEventListener(mEventAttendeesCountListener);
     }
     public void removeEventAttendeesCountListener(String eventKey){
         mDatabase.child("rsvp").child("event_users").child(eventKey).removeEventListener(mEventAttendeesCountListener);
+    }*/
+public void setEventAttendeesCountListener(ChildEventListener mEventAttendeesCountListener){
+    if(UserModel.get().getCurrentDetailedEvent() != null) {
+        String car =""+UserModel.get().getCurrentDetailedEvent().getEventID();
+        mDatabase.child("rsvp").child("event_users").child(UserModel.get().getCurrentDetailedEvent().getEventID()).addChildEventListener(mEventAttendeesCountListener);
+    }
+    }
+    public void removeEventAttendeesCountListener(ChildEventListener mEventAttendeesCountListener){
+        mDatabase.child("rsvp").child("event_users").child(UserModel.get().getCurrentDetailedEvent().getEventID()).removeEventListener(mEventAttendeesCountListener);
     }
     public void addEvent(Event e){
         // Get Unique Key For Event
@@ -322,6 +331,10 @@ public class Firebase_Model {
         mDatabase.child("rsvp").child("event_users").child(key).child(mAuthUser.getUid()).setValue(true);
         mDatabase.child("rsvp").child("user_events").child(mAuthUser.getUid()).child(key).setValue(true);
     }
+    public void addFriend(String key){
+        mDatabase.child("following").child(mAuthUser.getUid()).child(key).setValue(true);
+    }
+
     public void findUserForFriendsByID(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()
 
@@ -355,7 +368,7 @@ public class Firebase_Model {
             }
         });
     }
-    private void findUserByID_RemoveAttendee(String key){
+  /*  public void findUserByID_RemoveAttendee(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()
         Log.d(TAG,"findUserByID_RemoveAttendee("+key+")");
         mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -371,7 +384,7 @@ public class Firebase_Model {
             }
         });
     }
-    private void findUserByID_AddAttendee(String key){
+    public void findUserByID_AddAttendee(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()
         Log.d(TAG,"findUserByID_AddAttendee("+key+")");
         mDatabase.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -386,7 +399,7 @@ public class Firebase_Model {
 
             }
         });
-    }
+    }*/
 
     private void findAndAddFriend(String key){
         //mPostReference = FirebaseDatabase.getInstance().getReference()

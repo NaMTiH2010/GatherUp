@@ -9,6 +9,7 @@ import android.widget.Button;
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.User;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
@@ -25,6 +26,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView username_TV;
     private TextView fullname_TV;
     private Button edit_BTN;
+    private Button add_friend_BTN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,7 @@ public class UserProfileActivity extends AppCompatActivity {
         job_TV = (TextView)findViewById(R.id.job_TV);
         //location_TV = (TextView)findViewById(R.id.location_TV);
         edit_BTN = (Button)findViewById(R.id.edit_BTN);
-
+        add_friend_BTN = (Button)findViewById(R.id.add_friend_BTN);
         username_TV = (TextView)findViewById(R.id.username_TV);
         fullname_TV = (TextView)findViewById(R.id.fullname_TV);
 
@@ -55,8 +57,10 @@ public class UserProfileActivity extends AppCompatActivity {
         fullname_TV.setText(UserModel.get().getFullname());
 
         if(UserModel.get().getCurrentDetailedUser() != null){
-            if(UserModel.get().getMainUser().getUserID() != UserModel.get().getCurrentDetailedUser().getUser().getUserID()){
+            if(!UserModel.get().getMainUser().getUserID().equalsIgnoreCase(UserModel.get().getCurrentDetailedUser().getUser().getUserID())){
                 edit_BTN.setVisibility(View.INVISIBLE);
+            }else{
+                add_friend_BTN.setVisibility(View.INVISIBLE);
             }
             if(UserModel.get().getCurrentDetailedUser().getProfile() != null){
                 aboutMe_TV.setText(UserModel.get().getCurrentDetailedUser().getProfile().getAboutMe());
@@ -65,6 +69,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 gender_TV.setText(UserModel.get().getCurrentDetailedUser().getProfile().getGender());
                 job_TV.setText(UserModel.get().getCurrentDetailedUser().getProfile().getJob());
                 //location_TV.setText("Jersey Shore");
+            }
+            else {
+                aboutMe_TV.setText("Not Set");
+                age_TV.setText("Not Set");
+                birthday_TV.setText("Not Set");
+                gender_TV.setText("Not Set");
+                job_TV.setText("Not Set");
+                //location_TV.setText("Not Set");
             }
         }
         else {
@@ -81,6 +93,13 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, CreateProfileActivity.class);
                 startActivity(intent);
+            }
+        });
+        add_friend_BTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Firebase_Model.get().addFriend(UserModel.get().getCurrentDetailedUser().getUser().getUserID());
+                Toast.makeText(getApplicationContext(),"You succesfully Added Friend", Toast.LENGTH_SHORT).show();
             }
         });
     }

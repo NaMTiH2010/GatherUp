@@ -1,5 +1,6 @@
 package www.gatherup.com.gatherup.fragments;
 
+import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,26 +9,18 @@ import android.widget.TextView;
 
 import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.User;
-import www.gatherup.com.gatherup.fragments.UserListFragment.OnListFragmentInteractionListener;
 import www.gatherup.com.gatherup.fragments.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecyclerViewAdapter.ViewHolder> {
 
-    private final List<User> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final ObservableArrayList<User> mValues;
 
-    public MyUserRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
+    public MyUserRecyclerViewAdapter(ObservableArrayList<User> items) {
         mValues = items;
-        mListener = listener;
     }
-
+    public void addUser(User user){
+        mValues.add(user);
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -37,20 +30,10 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        User user = mValues.get(position);
        /* holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);*/
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        holder.bind(user);
     }
 
     @Override
@@ -67,13 +50,17 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mIdView = (TextView) view.findViewById(R.id.edit_BTN);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        public void bind(User user) {
+
         }
     }
 }

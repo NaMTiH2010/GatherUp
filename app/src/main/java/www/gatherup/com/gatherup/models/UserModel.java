@@ -41,6 +41,7 @@ public class UserModel {
     private static UserModel sUserModel;
     private boolean mLoading;
     private User mMainUser;
+    private Event mCurrentEvent;
 
     private UserModel(Context context){
         this.mContext = context;
@@ -255,5 +256,11 @@ public class UserModel {
                 }
             }
         }
+    }
+    public void setCurrentEvent(Event e){
+        mCurrentEvent = e;
+    }
+    public Event getCurrentEvent() {
+        return mCurrentEvent;
     }
 }

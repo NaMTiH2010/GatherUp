@@ -75,8 +75,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
                     Firebase_Model.get().setHasProfileToTrue();
                     Toast.makeText(CreateProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateProfileActivity.this, HomeScreenActivity.class);
-                    startActivity(intent);
+                    onBackPressed();
                     finish();
                 }
 

@@ -1,6 +1,7 @@
 package www.gatherup.com.gatherup.data;
 
 import android.content.Context;
+import android.databinding.ObservableArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -24,7 +25,7 @@ public class DetailedEvent{
     private double longitude;
     private User owner;
     private String address;
-    private ArrayList<User> attendeesList;
+    private ObservableArrayList<User> attendeesList;
     private Calendar startDate;
     private Calendar endDate;
     private String Description;
@@ -62,7 +63,7 @@ public class DetailedEvent{
             this.owner = new User();
         }
 
-        this.attendeesList = new ArrayList<>();
+        this.attendeesList = new ObservableArrayList<>();
         this.rating = 0;
         this.activity = activity;
     }
@@ -115,7 +116,7 @@ public class DetailedEvent{
         this.owner = owner;
     }
 
-    public ArrayList<User> getAttendeesList() {
+    public ObservableArrayList<User> getAttendeesList() {
         return attendeesList;
     }
     /*public void setAtendeesList(ArrayList<User> atendeesList) {

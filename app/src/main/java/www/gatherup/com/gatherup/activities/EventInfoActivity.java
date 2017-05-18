@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ import www.gatherup.com.gatherup.R;
 import www.gatherup.com.gatherup.data.DetailedEvent;
 import www.gatherup.com.gatherup.data.Event_Type;
 import www.gatherup.com.gatherup.data.User;
+import www.gatherup.com.gatherup.fragments.EventRecyclerViewFragment;
+import www.gatherup.com.gatherup.fragments.UserListFragment;
 import www.gatherup.com.gatherup.models.Firebase_Model;
 import www.gatherup.com.gatherup.models.UserModel;
 
@@ -39,7 +42,7 @@ public class EventInfoActivity extends AppCompatActivity {
         //mDetailedEvent = (DetailedEvent)getIntent().getExtras().get("mDetailedEvent");
 
         //TODO this is using GlobalAppState
-        mDetailedEvent = new DetailedEvent(((GlobalAppState)getApplicationContext()).getCurrentEvent(),this);
+        mDetailedEvent = new DetailedEvent(UserModel.get().getCurrentEvent(),this);
         ImageView img = (ImageView)findViewById(R.id.imageView5);
         TextView titleTv = (TextView)findViewById(R.id.event_info_title_tv);
         TextView dayTv = (TextView)findViewById(R.id.event_info_day);
@@ -52,6 +55,7 @@ public class EventInfoActivity extends AppCompatActivity {
         Button mapBtn = (Button)findViewById(R.id.event_info_open_map_btn);
         Button editBtn = (Button)findViewById(R.id.event_info_edit_btn);
         RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        Button userList_BTN = (Button)findViewById(R.id.userList_BTN);
         final Button reportButton = (Button)findViewById(R.id.event_info_report);
 
         if(mDetailedEvent.getInnerEvent().getId().equals("http")){
@@ -64,6 +68,7 @@ public class EventInfoActivity extends AppCompatActivity {
 */
 
         }
+
         else if(mDetailedEvent.getInnerEvent().getEvent_type() == Event_Type.DEFAULT.getTypeNumber()){
             img.setImageResource(R.drawable.default_event_detailed);
         }
@@ -88,7 +93,7 @@ public class EventInfoActivity extends AppCompatActivity {
         addressTv.setText(mDetailedEvent.getAddress());
 
         hostedByTv.setText((mDetailedEvent.getOwner().getEmail().startsWith("http")) ? "Meetup.com": mDetailedEvent.getOwner().getFullName());
-        rsvpTv.setText(mDetailedEvent.getAttendeesList().size() + " people are going");
+        rsvpTv.setText(mDetailedEvent.getInnerEvent().getAmountOfPeople() + " people are going");
 
         description.setText(mDetailedEvent.getDescription());
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -96,6 +101,16 @@ public class EventInfoActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 ratingBar.setIsIndicator(true);
                 Firebase_Model.get().sendRating(rating,mDetailedEvent.getInnerEvent());
+            }
+        });
+        if (mDetailedEvent.getOwner().getEmail().startsWith("http")) {
+            userList_BTN.setVisibility(View.INVISIBLE);
+        }
+        userList_BTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventInfoActivity.this, UserListActivity.class);
+                startActivity(intent);
             }
         });
         rsvpBtn.setOnClickListener(new View.OnClickListener() {
@@ -141,18 +156,18 @@ public class EventInfoActivity extends AppCompatActivity {
     public void onPause(){
         super.onPause();
         Log.d(TAG,"onPause() called");
-        if(mDetailedEvent.getEventID() != null && !mDetailedEvent.getEventID().isEmpty()) {
+/*        if(mDetailedEvent.getEventID() != null && !mDetailedEvent.getEventID().isEmpty()) {
             Firebase_Model.get().removeEventAttendeesCountListener(mDetailedEvent.getEventID());
-        }
+        }*/
     }
 
     @Override
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume() called");
-        if(mDetailedEvent.getEventID() != null && !mDetailedEvent.getEventID().isEmpty()) {
+/*        if(mDetailedEvent.getEventID() != null && !mDetailedEvent.getEventID().isEmpty()) {
             Firebase_Model.get().setEventAttendeesCountListener(mDetailedEvent.getEventID());
-        }
+        }*/
     }
 
     @Override

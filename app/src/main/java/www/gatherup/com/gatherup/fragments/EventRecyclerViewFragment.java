@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.databinding.ObservableList.OnListChangedCallback;
-import java.lang.ref.WeakReference;
-
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,10 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import www.gatherup.com.gatherup.GlobalAppState;
@@ -59,7 +51,6 @@ public class EventRecyclerViewFragment  extends Fragment {
     private ChildEventListener mRegisteredEventListener;
     private RecyclerView mEventRecyclerView;
     private EventAdapter mAdapter;
-    private FirebaseRecyclerAdapter mFirebaseRecyclerAdapter;
     private boolean mSubtitleVisible;
     //private Callbacks mCallbacks;
 
@@ -153,15 +144,15 @@ public class EventRecyclerViewFragment  extends Fragment {
         //UserModel userModel = UserModel.get(getActivity());
         //= userModel.getFilteredEvents();
 
-        if (mFirebaseRecyclerAdapter == null) {
+        if (mAdapter == null) {
 
             //events = new ObservableArrayList<Event>();
             if (getActivity() instanceof HomeScreenActivity) {
                 mAdapter = new EventAdapter(UserModel.get().getEvents());
             }
             else{mAdapter = new EventAdapter(UserModel.get().getRegisteredDetailedEvents());}
-
             mEventRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         } else {
             if (getActivity() instanceof HomeScreenActivity) {
                 mAdapter.setEvents(UserModel.get().getEvents());
@@ -295,7 +286,8 @@ public class EventRecyclerViewFragment  extends Fragment {
             Intent intent = new Intent(getActivity(), EventInfoActivity.class);
             // intent.putExtra("Event", Event);
             //TODO this is using GLobalAppState
-            ((GlobalAppState)getContext().getApplicationContext()).setCurrentEvent(mEvent);
+            //((GlobalAppState)getContext().getApplicationContext()).setCurrentEvent(mEvent);
+            UserModel.get().setCurrentEvent(mEvent);
             startActivity(intent);
             //mCallbacks.onEventSelected(mEvent);
         }

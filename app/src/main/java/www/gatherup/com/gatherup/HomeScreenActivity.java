@@ -89,33 +89,10 @@ public class HomeScreenActivity extends AppCompatActivity
         appState.getCategories().add("Games");
 
 
-
-        // TODO this is for trying out GlobalAppState
-
-        //appState.setDetailedEventList((ArrayList<DetailedEvent>) mDetailedEventList.clone());
-        /*appState.setEventList((ArrayList<Event>) mEventList.clone());
-        appState.setFilteredEvents(appState.getEventList());*/
-        UserModel.get().setFilteredEvents(UserModel.get().getEvents());
         Collections.sort(UserModel.get().getEvents());
 
-
-
-        //EventRecyclerViewFragment allEventsListFragment = new EventRecyclerViewFragment();
         FragmentManager manager= getSupportFragmentManager();
-        //Fragment fragment = manager.findFragmentById(R.id.eventlist_fragment_listview);
         manager.beginTransaction().replace(R.id.content_home, new EventRecyclerViewFragment()).commit();
-/*        if (fragment == null) {
-            fragment = new EventRecyclerViewFragment();
-            manager.beginTransaction()
-                    .add(R.id.eventlist_fragment_listview, fragment)
-                    .commit();*/
-
-
-       // manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();
-        /*EventListFragment allEventsListFragment = EventListFragment.newInstance();
-        FragmentManager manager= getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content_home, allEventsListFragment).commit();*/
-
     }
 
     @Override
